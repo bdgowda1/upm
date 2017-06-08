@@ -58,7 +58,7 @@ namespace upm
  * @snippet ms5611.cxx Interesting
  */
 
-class MS5611 : public IPressureSensor, public ITemperatureSensor
+class MS5611 : public iPressureSensor, public iTemperatureSensor
 {
 public:
    enum OsrMode
@@ -68,10 +68,27 @@ public:
 
    MS5611(int i2cBus = 0, int address = MS5611_ADDRESS);
    ~MS5611();
-   virtual const char* getModuleName() { return "ms5611"; }
    void setOverSampling(OsrMode osrMode);
    int getTemperatureCelsius();
    int getPressurePa();
+
+    /** Return the name of this device */
+    virtual std::string Name() const {return "ms5611";}
+
+    /** Return the description of this device */
+    virtual std::string Description() const {return "Barometric pressure and temperature sensor";}
+
+    /* Expose all base methods for Temperature */
+    using iTemperatureSensor::Temperature;
+
+    /* Provide an implementation of a method to get sensor values by source */
+    virtual std::map<std::string, float> Temperature(std::vector<std::string> sources);
+
+    /* Expose all base methods for Pressure */
+    using iPressureSensor::Pressure;
+
+    /* Provide an implementation of a method to get sensor values by source */
+    virtual std::map<std::string, float> Pressure(std::vector<std::string> sources);
 
 private:
    /* Disable implicit copy and assignment operators */

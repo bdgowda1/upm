@@ -68,7 +68,7 @@ namespace upm {
      * @snippet bmpx8x.cxx Interesting
      */
 
-    class BMPX8X : public IPressureSensor, public ITemperatureSensor {
+    class BMPX8X : public iPressureSensor, public iTemperatureSensor {
     public:
         /**
          * Instantiates a BMPX8X object
@@ -84,6 +84,24 @@ namespace upm {
          * BMPX8X object destructor.
          */
         virtual ~BMPX8X();
+
+        /** Return the name of this device */
+        virtual std::string Name() const {return "BMPX8X";}
+
+        /** Return the description of this device */
+        virtual std::string Description() const {return "Atmospheric pressure sensor";}
+
+        /* Expose all base methods for Temperature */
+        using iTemperatureSensor::Temperature;
+
+        /* Provide an implementation of a method to get sensor values by source */
+        virtual std::map<std::string, float> Temperature(std::vector<std::string> sources);
+
+        /* Expose all base methods for Pressure */
+        using iPressureSensor::Pressure;
+
+        /* Provide an implementation of a method to get sensor values by source */
+        virtual std::map<std::string, float> Pressure(std::vector<std::string> sources);
 
         /**
          * Query the device and update the internal state.  This
@@ -178,7 +196,7 @@ namespace upm {
 
         /**
          * Return latest calculated temperature value in Celsius.  See
-         * ITemperatureSensor.
+         * iTemperatureSensor.
          *
          * @return The current temperature in Celsius.
          */
@@ -190,7 +208,7 @@ namespace upm {
 
         /**
          * Return latest calculated pressure value in Pascals.  See
-         * IPressureSensor.
+         * iPressureSensor.
          *
          * @return The current pressure in Pascals.
          */
@@ -198,16 +216,6 @@ namespace upm {
         {
             update();
             return getPressure();
-        }
-
-        /**
-         * Returns the name of module.
-         *
-         * @return The name of the module.
-         */
-        const char *getModuleName()
-        {
-            return "BMPX8X";
         }
 
     protected:

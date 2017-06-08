@@ -1,11 +1,9 @@
-// Include doxygen-generated documentation
-%include "pyupm_doxy2swig.i"
+/* Specify the name of the target JAVA module */
 %module pyupm_ims
-%include "../upm.i"
 
-%{
-    #include "ims.hpp"
-%}
+/* If documentation is enabled, a full "pyupm_doxy2swig.i file will be
+ * generated and used...  Otherwise, use a stub */
+%include "pyupm_doxy2swig.i"
 
-%include "ims_defs.h"
-%include "ims.hpp"
+/* Include the base sensor interface file */
+%include "common.i"

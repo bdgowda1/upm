@@ -4,7 +4,6 @@
 %include "pyupm_doxy2swig.i"
 
 
-%include "iModuleStatus.hpp"
 %include "iLightController.hpp"
 %include "ds1808lc.hpp"
 %{

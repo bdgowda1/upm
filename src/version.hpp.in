@@ -1,6 +1,8 @@
+#pragma once
+
 #include <string>
 
-inline std::string getVersion()
+static std::string Version()
 {
     return "@upm_VERSION_STRING@";
 }

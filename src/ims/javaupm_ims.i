@@ -1,11 +1,5 @@
 %module javaupm_ims
-%include "../upm.i"
 
-%{
-    #include "ims.hpp"
-%}
-
-%include "ims_defs.h"
-%include "ims.hpp"
+%include "common.i"
 
 JAVA_JNI_LOADLIBRARY(javaupm_ims)

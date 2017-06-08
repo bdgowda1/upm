@@ -1,19 +1,7 @@
 %module jsupm_bmp280
-%include "../upm.i"
-%include "cpointer.i"
 
-%include "iModuleStatus.hpp"
-%include "iHumiditySensor.hpp"
-%include "iPressureSensor.hpp"
-%include "iTemperatureSensor.hpp"
+%include "iHumiditySensor.i"
+%include "iPressureSensor.i"
+%include "iTemperatureSensor.i"
 
-%include "bmp280_regs.h"
-%include "bmp280.hpp"
-%{
-    #include "bmp280.hpp"
-%}
-
-%include "bme280.hpp"
-%{
-    #include "bme280.hpp"
-%}
+%include "common.i"

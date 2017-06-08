@@ -5,6 +5,5 @@
     #include "ds1808lc.hpp"
 %}
 
-%include "iModuleStatus.hpp"
 %include "iLightController.hpp"
 %include "ds1808lc.hpp"

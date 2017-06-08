@@ -38,14 +38,14 @@
 #define EDISON_GPIO_SI7005_CS 20
 
 //! [Interesting]
-// Simple example of using ILightSensor to determine
+// Simple example of using iHumiditySensor to determine
 // which sensor is present and return its name.
-// ILightSensor is then used to get readings from sensor
+// iHumiditySensor is then used to get readings from sensor
 
-upm::IHumiditySensor*
+upm::iHumiditySensor*
 getHumiditySensor()
 {
-    upm::IHumiditySensor* humiditySensor = NULL;
+    upm::iHumiditySensor* humiditySensor = NULL;
 
     try {
         humiditySensor = new upm::BME280(mraa_get_sub_platform_id(FT4222_I2C_BUS));
@@ -66,22 +66,26 @@ getHumiditySensor()
 int
 main()
 {
-    upm::IHumiditySensor* humiditySensor = getHumiditySensor();
-    if (humiditySensor == NULL) {
+    upm::iHumiditySensor* sensor = getHumiditySensor();
+
+    if (sensor == NULL) {
         std::cout << "Humidity sensor not detected" << std::endl;
         return 1;
     }
-    std::cout << "Humidity sensor " << humiditySensor->getModuleName() << " detected" << std::endl;
-    while (true) {
-        try {
-            int value = humiditySensor->getHumidityRelative();
-            std::cout << "Humidity = " << value << "%" << std::endl;
-        } catch (std::exception& e) {
-            std::cerr << e.what() << std::endl;
-        }
-        upm_delay(1);
+
+    std::cout << "Humidity sensor " << sensor->Name() << " detected" << std::endl;
+
+    try {
+        std::map<std::string, float> values = sensor->Humidity();
+        for (std::map<std::string, float>::const_iterator it = values.begin();
+                it != values.end(); ++it)
+            std::cout << it->first << " = " << it->second
+                << sensor->Unit(it->first) << std::endl;
+    } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
     }
-    delete humiditySensor;
+
+    delete sensor;
     return 0;
 }
 

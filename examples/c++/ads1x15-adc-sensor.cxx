@@ -50,7 +50,7 @@ main()
         std::cout << "ADC not detected" << std::endl;
         return 1;
     }
-    std::cout << "ADC " << adc->getModuleName() << " detected. ";
+    std::cout << "ADC " << adc->Name() << " detected. ";
     std::cout << adc->getNumInputs() << " inputs available" << std::endl;
     while (true) {
         for (unsigned int i = 0; i < adc->getNumInputs(); ++i) {

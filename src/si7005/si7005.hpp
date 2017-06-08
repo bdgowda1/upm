@@ -27,6 +27,7 @@
 
 #include "interfaces/iTemperatureSensor.hpp"
 #include "interfaces/iHumiditySensor.hpp"
+#include "interfaces/iMraa.hpp"
 
 /* ADDRESS AND NOT_FOUND VALUE */
 #define SI7005_ADDRESS                     ( 0x40 )
@@ -59,20 +60,43 @@ namespace upm {
  *
  * @snippet si7005.cxx Interesting
  */
-class SI7005 : public ITemperatureSensor, public IHumiditySensor {
+class SI7005 :
+    public virtual iMraa,
+    public virtual iTemperatureSensor,
+    public virtual iHumiditySensor {
     public:
+        SI7005(const std::string &init_string);
+
         /**
          * Instantiates a SI7005 object
          *
-         * @param bus number of used bus
          * @param pin gpio number for chip select pin
+         * @param bus I2c bus number
+         * @param addr (optional) I2c address, defaults to SI7005_ADDRESS
          */
-        SI7005 (int bus, int pin);
+        SI7005(int pin, int bus, int addr = SI7005_ADDRESS):
+            SI7005("g:" + std::to_string(pin) + ":out," +
+                   "i:" + std::to_string(bus) + ":" + std::to_string(addr)) {}
 
-        /**
-         * SI7005 object destructor.
-         */
-        ~SI7005 ();
+        virtual ~SI7005() {}
+
+        /** Return the name of this device */
+        virtual std::string Name() const {return "SI7005";}
+
+        /** Return the description of this device */
+        virtual std::string Description() const {return "Digital I2C humidity and temperature sensor";}
+
+        /* Expose all base methods for Temperature */
+        using iTemperatureSensor::Temperature;
+
+        /* Provide an implementation of a method to get sensor values by source */
+        virtual std::map<std::string, float> Temperature(std::vector<std::string> sources);
+
+        /* Expose all base methods for Humidity */
+        using iHumiditySensor::Humidity;
+
+        /* Provide an implementation of a method to get sensor values by source */
+        virtual std::map<std::string, float> Humidity(std::vector<std::string> sources);
 
         /**
          * Get temperature measurement.
@@ -95,12 +119,10 @@ class SI7005 : public ITemperatureSensor, public IHumiditySensor {
         int getHumidityRelative ();
 
         /**
-         * Returns sensor module name
-         */
-        virtual const char* getModuleName() { return "si7005"; }
-
-        /**
-         * Detects the sensor to ensure it is connected as required.
+         * Reads from the device ID register as a means to verify the
+         * sensor is connected.
+         *
+         * @return true if sensor ID register read succeeds, false otherwise
          */
         bool isAvailable();
 
@@ -129,10 +151,7 @@ class SI7005 : public ITemperatureSensor, public IHumiditySensor {
         SI7005(const SI7005&) = delete;
         SI7005 &operator=(const SI7005&) = delete;
 
-        int m_controlAddr;
-        int m_bus;
         int m_pin;
-        mraa::I2c* m_i2c;
         mraa::Result status;
         uint8_t config_reg;
         float last_temperature;

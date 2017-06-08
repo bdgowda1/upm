@@ -24,7 +24,13 @@
 
 #pragma once
 
+#include <typeinfo>
+
 #include "ims.h"
+#include "interfaces/iMraa.hpp"
+#include "interfaces/iLightSensor.hpp"
+#include "interfaces/iMoistureSensor.hpp"
+#include "interfaces/iTemperatureSensor.hpp"
 
 namespace upm {
 /**
@@ -55,7 +61,12 @@ namespace upm {
  * @snippet ims.cxx Interesting
  */
 
-class IMS {
+class IMS :
+    public virtual iMraa,
+    public virtual iLightSensor,
+    public virtual iMoistureSensor,
+    public virtual iTemperatureSensor
+{
     public:
         /**
          * I2C Moisture Sensor constructor
@@ -68,10 +79,21 @@ class IMS {
          */
         IMS(int16_t i2c_bus, int16_t i2c_address = IMS_ADDRESS_DEFAULT);
 
+        IMS(std::string init_str);
+
         /**
          * IMS destructor
          */
         virtual ~IMS() {};
+
+        virtual std::string Name() const {return "IMS";}
+        virtual std::string Description() const {return "Catnip Electronics I2C moisture sensor";}
+        using iLightSensor::Light;
+        virtual std::map<std::string, float> Light(std::vector<std::string> sources);
+        using iTemperatureSensor::Temperature;
+        virtual std::map<std::string, float> Temperature(std::vector<std::string> sources);
+        using iMoistureSensor::GetMoisture;
+        virtual std::map<std::string, float> GetMoisture(std::vector<std::string> sources);
 
         /**
          * Write I2C Moisture Sensor registers

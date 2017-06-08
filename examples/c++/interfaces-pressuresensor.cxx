@@ -36,14 +36,14 @@
 #define FT4222_I2C_BUS 0
 
 //! [Interesting]
-// Simple example of using ILightSensor to determine
+// Simple example of using iPressureSensor to determine
 // which sensor is present and return its name.
-// ILightSensor is then used to get readings from sensor
+// iPressureSensor is then used to get readings from sensor
 
-upm::IPressureSensor*
+upm::iPressureSensor*
 getPressureSensor()
 {
-    upm::IPressureSensor* pressureSensor = NULL;
+    upm::iPressureSensor* pressureSensor = NULL;
     try {
         pressureSensor = new upm::BME280(mraa_get_sub_platform_id(FT4222_I2C_BUS));
         return pressureSensor;
@@ -63,22 +63,26 @@ getPressureSensor()
 int
 main()
 {
-    upm::IPressureSensor* pressureSensor = getPressureSensor();
-    if (pressureSensor == NULL) {
+    upm::iPressureSensor* sensor = getPressureSensor();
+
+    if (sensor == NULL) {
         std::cout << "Pressure sensor not detected" << std::endl;
         return 1;
     }
-    std::cout << "Pressure sensor " << pressureSensor->getModuleName() << " detected" << std::endl;
-    while (true) {
-        try {
-            int value = pressureSensor->getPressurePa();
-            std::cout << "Pressure = " << value << " Pa" << std::endl;
-        } catch (std::exception& e) {
-            std::cerr << e.what() << std::endl;
-        }
-        upm_delay(1);
+
+    std::cout << "Pressure sensor " << sensor->Name() << " detected" << std::endl;
+
+    try {
+        std::map<std::string, float> values = sensor->Pressure();
+        for (std::map<std::string, float>::const_iterator it = values.begin();
+                it != values.end(); ++it)
+            std::cout << it->first << " = " << it->second
+                << sensor->Unit(it->first) << std::endl;
+    } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
     }
-    delete pressureSensor;
+
+    delete sensor;
     return 0;
 }
 

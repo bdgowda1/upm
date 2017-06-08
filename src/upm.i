@@ -6,7 +6,7 @@
 %import _upm.i
 
 %{
-#include "version.hpp"
+    #include "version.hpp"
 %}
 %include "version.hpp"
 

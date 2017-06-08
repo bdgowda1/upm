@@ -1,61 +1,112 @@
-/*
- * Author: Henry Bruce <henry.bruce@intel.com>
- * Copyright (c) 2015 Intel Corporation.
- *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
-
 #pragma once
 
-#include <stdint.h>
-#include "iModuleStatus.hpp"
+#include <map>
+#include <vector>
+
+#include "iSensorType.hpp"
 
 namespace upm
 {
-/**
- * @brief ILightSensor Interface for Light Sensors
- */
+    /**
+     * iLightSensor abstract class.
+     *
+     * Provides a common interface for all sensors which detect light.
+     */
+    class iLightSensor : public virtual iSensorType
+    {
+        public:
+            /**
+             * Read and return all values for this sensor as a map of sources
+             * to values.
+             *
+             * @return Map of sources to values.
+             */
+            virtual std::map<std::string, float> Light() {return Light(Sources());}
 
-/**
- *
- * @brief Interface for Light Sensors
+            /**
+             * Read and return a single value from the source provided
+             *
+             * @param source Target source to read
+             *
+             * @throws std::invalid_argument If source is NOT valid for this sensor
+             *
+             * @return Map of sources to values.
+             */
+            virtual float Light(std::string source)
+            {
+                std::map<std::string, float> vals = Light(std::vector<std::string>(1, source));
 
- * This interface is used to represent light sensors
+                if (vals.empty())
+                {
+                    std::stringstream ss;
+                    ss << __FUNCTION__ << " sensor does not provide source: '"
+                        << source << ".  Valid sources are: {";
+                    std::copy(Sources().begin(), Sources().end() - 1,
+                            std::ostream_iterator<std::string>(ss, ", "));
+                    ss << Sources().back() << "}";
+                    throw std::invalid_argument(ss.str());
+                }
 
- * @snippet light-sensor.cxx Interesting
- */
+                return vals[source];
+            }
 
-   class ILightSensor : virtual public IModuleStatus
-   {
-   public:
+            /**
+             * Read and return all values for this sensor for the provided
+             * vector of sources.
+             *
+             * @param sources Vector of sources to read
+             *
+             * @return Map of sources to values.
+             */
+            virtual std::map<std::string, float> Light(std::vector<std::string> sources) = 0;
 
-	/**
-	 * Get visible illuminance in Lux.
-	 *
-	 * @return double visible illuminance in Lux
-	 */
-       virtual double getVisibleLux() = 0;
+            /**
+             * Add a pointer to this type and a proxy function pointer for
+             * serializing all values from this sensor type.
+             */
+            iLightSensor()
+            {
+                AddSerializer(this, &_JsonLight);
+            }
 
+            /**
+             * Read and return all values for this sensor as JSON
+             *
+             * @return JSON string of light values
+             */
+            virtual std::string JsonLight() const
+            {
+                return "{" + _JsonLight((iLightSensor*)this) + "}";
+            }
 
-       virtual ~ILightSensor() {}
-   };
+        private:
+            /**
+             * Provide a means to read and serialize values from this sensor
+             * as a static method.  This method, along with a pointer to the
+             * class can be called from a base class
+             *
+             * @param inst Instance of iLightSensor to call _JsonLight on
+             *
+             * @return JSON string of light values (minus wrapping '{' and '}'
+             */
+            static std::string _JsonLight(iUpmObject * inst)
+            {
+                std::stringstream ss;
+
+                /* Downcast to reference (throws if cast fails) */
+                iLightSensor& ref = dynamic_cast<iLightSensor&>(*inst);
+
+                std::map<std::string, float> data = ref.Light();
+
+                for (std::map<std::string, float>::const_iterator it = data.begin();
+                        it != data.end();)
+                {
+                    ss << "\"" << it->first << "\" : {\"value\" : " << it->second
+                        << ", \"units\" : \"" << ref.Unit(it->first) << "\"}";
+                    if (++it != data.end()) ss << "," << std::endl;
+                }
+
+                return ss.str();
+            }
+    };
 }
-

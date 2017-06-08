@@ -60,7 +60,6 @@ public:
    ~HLG150H();
 
    virtual int getBrightness();
-   const char* getModuleName() { return "hlg150h"; }
    void setPowerOn();
    void setPowerOff();
    bool isPowered();

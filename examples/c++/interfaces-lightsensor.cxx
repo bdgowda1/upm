@@ -36,14 +36,14 @@
 #define FT4222_I2C_BUS 0
 
 //! [Interesting]
-// Simple example of using ILightSensor to determine
+// Simple example of using iLightSensor to determine
 // which sensor is present and return its name.
-// ILightSensor is then used to get readings from sensor
+// iLightSensor is then used to get readings from sensor
 
-upm::ILightSensor*
+upm::iLightSensor*
 getLightSensor()
 {
-    upm::ILightSensor* lightSensor = NULL;
+    upm::iLightSensor* lightSensor = NULL;
     try {
         lightSensor = new upm::SI1132(mraa_get_sub_platform_id(FT4222_I2C_BUS));
         return lightSensor;
@@ -62,22 +62,26 @@ getLightSensor()
 int
 main()
 {
-    upm::ILightSensor* lightSensor = getLightSensor();
-    if (lightSensor == NULL) {
+    upm::iLightSensor* sensor = getLightSensor();
+
+    if (sensor == NULL) {
         std::cout << "Light sensor not detected" << std::endl;
         return 1;
     }
-    std::cout << "Light sensor " << lightSensor->getModuleName() << " detected" << std::endl;
-    while (true) {
-        try {
-            float value = lightSensor->getVisibleLux();
-            std::cout << "Light level = " << value << " lux" << std::endl;
-        } catch (std::exception& e) {
-            std::cerr << e.what() << std::endl;
-        }
-        upm_delay(1);
+
+    std::cout << "Light sensor " << sensor->Name() << " detected" << std::endl;
+
+    try {
+        std::map<std::string, float> values = sensor->Light();
+        for (std::map<std::string, float>::const_iterator it = values.begin();
+                it != values.end(); ++it)
+            std::cout << it->first << " = " << it->second
+                << sensor->Unit(it->first) << std::endl;
+    } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
     }
-    delete lightSensor;
+
+    delete sensor;
     return 0;
 }
 

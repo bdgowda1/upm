@@ -24,7 +24,6 @@
 
 #pragma once
 
-#include "iModuleStatus.hpp"
 
 namespace upm
 {
@@ -41,7 +40,7 @@ namespace upm
  * @snippet light-controllers.cxx Interesting 
  */
 
-    class ILightController : virtual public IModuleStatus
+    class ILightController
     {
     public:
       /**

@@ -35,9 +35,9 @@ public class BME280_InterfaceExample
         // Instantiate a BME280 instance using default i2c bus and address
         BME280 sensor = new BME280();
 
-        ITemperatureSensor t_sensor = sensor;
-        IHumiditySensor h_sensor = sensor;
-        IPressureSensor p_sensor = sensor;
+        iTemperatureSensor t_sensor = sensor;
+        iHumiditySensor h_sensor = sensor;
+        iPressureSensor p_sensor = sensor;
 
         // For SPI, bus 0, you would pass -1 as the address, and a
         // valid pin for CS:

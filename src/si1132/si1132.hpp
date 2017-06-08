@@ -56,7 +56,7 @@ namespace upm {
  *
  * @snippet si1132.cxx Interesting
  */
-class SI1132 : public ILightSensor {
+class SI1132 : public iLightSensor {
     public:
         /**
          * Instanciates a Si1132 object
@@ -80,7 +80,17 @@ class SI1132 : public ILightSensor {
          */
         double getVisibleLux();
 
-        virtual const char* getModuleName() { return "si1132"; }
+        /** Return the name of this device */
+        virtual std::string Name() const {return "SI1132";}
+
+        /** Return the description of this device */
+        virtual std::string Description() const {return "UV and ambient light sensor";}
+
+        /* Expose all base methods for Light */
+        using iLightSensor::Light;
+
+        /* Provide an implementation of a method to get sensor values by source */
+        virtual std::map<std::string, float> Light(std::vector<std::string> sources);
 
     private:
         /* Disable implicit copy and assignment operators */

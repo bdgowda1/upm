@@ -66,7 +66,7 @@ main(int argc, char** argv)
 
     upm::ILightController* lightController = getLightController();
     if (lightController != NULL) {
-        std::cout << "Detected light controller " << lightController->getModuleName() << std::endl;
+        //std::cout << "Detected light controller " << lightController->getModuleName() << std::endl;
     } else {
         std::cerr << "Error. Unsupported platform." << std::endl;
         return 1;

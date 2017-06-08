@@ -39,14 +39,14 @@
 #define EDISON_GPIO_SI7005_CS 20
 
 //! [Interesting]
-// Simple example of using ITemperatureSensor to determine
+// Simple example of using iTemperatureSensor to determine
 // which sensor is present and return its name.
-// ITemperatureSensor is then used to get readings from sensor
+// iTemperatureSensor is then used to get readings from sensor
 
-upm::ITemperatureSensor*
+upm::iTemperatureSensor*
 getTemperatureSensor()
 {
-    upm::ITemperatureSensor* temperatureSensor = NULL;
+    upm::iTemperatureSensor* temperatureSensor = NULL;
 
     try {
         temperatureSensor = new upm::BME280(mraa_get_sub_platform_id(FT4222_I2C_BUS));
@@ -73,23 +73,26 @@ getTemperatureSensor()
 int
 main()
 {
-    upm::ITemperatureSensor* temperatureSensor = getTemperatureSensor();
-    if (temperatureSensor == NULL) {
+    upm::iTemperatureSensor* sensor = getTemperatureSensor();
+
+    if (sensor == NULL) {
         std::cout << "Temperature sensor not detected" << std::endl;
         return 1;
     }
-    std::cout << "Temperature sensor " << temperatureSensor->getModuleName() << " detected"
-              << std::endl;
-    while (true) {
-        try {
-            int value = temperatureSensor->getTemperatureCelsius();
-            std::cout << "Temperature = " << value << "C" << std::endl;
-        } catch (std::exception& e) {
-            std::cerr << e.what() << std::endl;
-        }
-        upm_delay(1);
+
+    std::cout << "Temperature sensor " << sensor->Name() << " detected" << std::endl;
+
+    try {
+        std::map<std::string, float> values = sensor->Temperature();
+        for (std::map<std::string, float>::const_iterator it = values.begin();
+                it != values.end(); ++it)
+            std::cout << it->first << " = " << it->second
+                << sensor->Unit(it->first) << std::endl;
+    } catch (std::exception& e) {
+        std::cerr << e.what() << std::endl;
     }
-    delete temperatureSensor;
+
+    delete sensor;
     return 0;
 }
 
