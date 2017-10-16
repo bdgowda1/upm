@@ -21,7 +21,7 @@ namespace upm
              *
              * @return Map of sources to values.
              */
-            virtual std::map<std::string, float> Humidity() {return Humidity(Sources());}
+            virtual std::map<std::string, float> HumidityAll() {return HumidityForSources(Sources());}
 
             /**
              * Read and return a single value from the source provided
@@ -32,13 +32,9 @@ namespace upm
              *
              * @return Map of sources to values.
              */
-#if defined(SWIGJAVA)
-            virtual float HumidityFloat(std::string source)
-#else
-            virtual float Humidity(std::string source)
-#endif
+            virtual float HumidityForSource(std::string source)
             {
-                std::map<std::string, float> vals = Humidity(std::vector<std::string>(1, source));
+                std::map<std::string, float> vals = HumidityForSources(std::vector<std::string>(1, source));
 
                 if (vals.empty())
                 {
@@ -62,7 +58,7 @@ namespace upm
              *
              * @return Map of sources to values.
              */
-            virtual std::map<std::string, float> Humidity(std::vector<std::string> sources) = 0;
+            virtual std::map<std::string, float> HumidityForSources(std::vector<std::string> sources) = 0;
 
             /**
              * Add a pointer to this type and a proxy function pointer for
@@ -100,7 +96,7 @@ namespace upm
                 /* Downcast to reference (throws if cast fails) */
                 iHumiditySensor& ref = dynamic_cast<iHumiditySensor&>(*inst);
 
-                std::map<std::string, float> data = ref.Humidity();
+                std::map<std::string, float> data = ref.HumidityAll();
 
                 for (std::map<std::string, float>::const_iterator it = data.begin();
                         it != data.end();)

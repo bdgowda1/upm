@@ -10,9 +10,9 @@ namespace upm
     class iMoistureSensor : public virtual iSensorType
     {
         public:
-            virtual std::map<std::string, float> GetMoisture() {return GetMoisture(Sources());}
-            virtual std::map<std::string, float> GetMoisture(std::string source){ return GetMoisture(std::vector<std::string>(1, source)); }
-            virtual std::map<std::string, float> GetMoisture(std::vector<std::string> sources) = 0;
+            virtual std::map<std::string, float> GetMoistureAll() {return GetMoistureForSources(Sources());}
+            virtual std::map<std::string, float> GetMoistureForSource(std::string source){ return GetMoistureForSources(std::vector<std::string>(1, source)); }
+            virtual std::map<std::string, float> GetMoistureForSources(std::vector<std::string> sources) = 0;
 
             iMoistureSensor()
             {
@@ -37,7 +37,7 @@ namespace upm
                 /* Downcast to reference (throws if cast fails) */
                 iMoistureSensor& ref = dynamic_cast<iMoistureSensor&>(*inst);
 
-                std::map<std::string, float> data = ref.GetMoisture();
+                std::map<std::string, float> data = ref.GetMoistureAll();
 
                 for (std::map<std::string, float>::const_iterator it = data.begin();
                         it != data.end();)

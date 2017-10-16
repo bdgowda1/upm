@@ -4,5 +4,4 @@
 * generated and used...  Otherwise, use a stub */
 %include "pyupm_doxy2swig.i"
 
-
 %include "common.i"

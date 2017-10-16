@@ -7,7 +7,8 @@ set (SWIG_CXX_DISABLE_WARNINGS -Wno-error
                                -Wno-delete-non-virtual-dtor
                                -Wno-unused-function
                                -Wno-maybe-uninitialized
-                               -Wno-strict-aliasing)
+                               -Wno-strict-aliasing
+                               -Wno-unused-but-set-variable)
 
 # If building under android, make sure swig gets an ANDROID flag
 if (ANDROID)
@@ -238,8 +239,9 @@ macro(_upm_swig_python)
                        ${CMAKE_CURRENT_BINARY_DIR}/..
                        ${DEPEND_DIRS})
 
-  set_source_files_properties (pyupm_${libname}.i PROPERTIES CPLUSPLUS ON)
-  set_source_files_properties (pyupm_${libname}.i PROPERTIES SWIG_FLAGS "-I${CMAKE_CURRENT_BINARY_DIR}/..")
+  set_source_files_properties (pyupm_${libname}.i PROPERTIES
+      SWIG_FLAGS "-module;pyupm_${libname};-I${CMAKE_CURRENT_BINARY_DIR}/.."
+      CPLUSPLUS ON)
 
   # Set current python binary dir
   set (CMAKE_CURRENT_PYTHON_BINARY_DIR
@@ -365,8 +367,9 @@ function(upm_swig_node)
                          ${CMAKE_CURRENT_BINARY_DIR}/..
                          ${DEPEND_DIRS})
 
-    set_property (SOURCE jsupm_${libname}.i PROPERTY SWIG_FLAGS "-node" "-DV8_VERSION=${V8_VERSION_HEX}")
-    set_source_files_properties (jsupm_${libname}.i PROPERTIES CPLUSPLUS ON)
+    set_source_files_properties (jsupm_${libname}.i PROPERTIES
+        SWIG_FLAGS "-module;jsupm_${libname};-node;-DV8_VERSION=${V8_VERSION_HEX}"
+        CPLUSPLUS ON)
     if (CMAKE_VERSION VERSION_LESS "3.8")
       swig_add_module (jsupm_${libname} javascript jsupm_${libname}.i)
     else ()
@@ -437,6 +440,7 @@ function(upm_swig_java)
 
     set_source_files_properties (javaupm_${libname}.i PROPERTIES CPLUSPLUS ON)
     set_source_files_properties (javaupm_${libname}.i PROPERTIES SWIG_FLAGS ";-package;upm_${libname};-I${CMAKE_BINARY_DIR}/src")
+
     if (CMAKE_VERSION VERSION_LESS "3.8")
       swig_add_module (javaupm_${libname} java javaupm_${libname}.i)
     else ()

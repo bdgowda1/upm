@@ -1,8 +1,6 @@
 %module jsupm_rhusb
-%include "../upm.i"
-%include "stdint.i"
 
-%include "rhusb.hpp"
-%{
-    #include "rhusb.hpp"
-%}
+%include "common.i"
+
+INHERIT_IHUMIDITYSENSOR(upm::RHUSB);
+INHERIT_ITEMPERATURESENSOR(upm::RHUSB);

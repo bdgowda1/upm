@@ -1,6 +1,7 @@
 /* TODO: better way to do this? */
 %feature("notabstract") upm::NoelsTempLightReader;
 
+%include "iMraa.i"
 %include "iLightSensor.i"
 %include "iTemperatureSensor.i"
 

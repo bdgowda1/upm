@@ -1,9 +1,8 @@
-/* TODO: better way to do this? */
-%feature("notabstract") upm::IMS;
-
-%include "iLightSensor.i"
-%include "iMoistureSensor.i"
-%include "iTemperatureSensor.i"
+%include "upm_interfaces.i"
+%import "iMraa.i"
+%import "iLightSensor.i"
+%import "iMoistureSensor.i"
+%import "iTemperatureSensor.i"
 
 %{
     #include "ims.hpp"

@@ -79,21 +79,21 @@ namespace upm
              *
              * @return Map of sources to units.
              */
-            virtual const std::map<std::string, std::string>& SourceMap() const { return _sources_2_units;}
+            const std::map<std::string, std::string>& SourceMap() const { return _sources_2_units;}
 
             /**
              * Return a vector of all known sources for this sensor.
              *
              * @return Vector of sources
              */
-            virtual const std::vector<std::string>& Sources() const { return _sources; }
+            const std::vector<std::string>& Sources() const { return _sources; }
 
             /**
              * Return a vector of all known units for this sensor.
              *
              * @return Vector of units
              */
-            virtual const std::vector<std::string>& Units() const { return _units; }
+            const std::vector<std::string>& Units() const { return _units; }
 
             /**
              * Return a unit string given a single source.
@@ -138,7 +138,24 @@ namespace upm
             virtual std::string JsonDefinition() const
             {
                 std::stringstream ss;
-                ss << "{" << std::endl << this << std::endl << "}";
+
+                ss << "{" << std::endl
+                   << "  \"name\" : \"" << Name() << "\"," << std::endl
+                   << "  \"description\" : \"" << Description() << "\"";
+
+                if (!SourceMap().empty())
+                {
+                    ss << "," << std::endl << "  \"sources\" :" << std::endl << "  {" << std::endl;
+                    for(std::map<std::string, std::string>::const_iterator it = SourceMap().begin();
+                            it != SourceMap().end();)
+                    {
+                        ss << "    \"" << it->first << "\" : {\"units\" : \"" << it->second << "\"}";
+                        if (++it != SourceMap().end())
+                            ss << "," << std::endl;
+                    }
+                    ss << std::endl << "  }";
+                }
+                ss << std::endl << "}";
                 return ss.str();
             }
 
@@ -180,33 +197,35 @@ namespace upm
                 return ss.str();
             }
 
-            /**
-             * Overload for stream operator - output a meaningful JsonDefinition string from
-             * an iSensorType Instance
-             */
-            friend std::ostream& operator<<(std::ostream& os, const iSensorType& o)
-            {
-                os << dynamic_cast<const iUpmObject&>(o) << "," << std::endl;
-                if (!o.SourceMap().empty())
-                {
-                    os << "  \"sources\" :" << std::endl << "  {" << std::endl;
-                    for(std::map<std::string, std::string>::const_iterator it = o.SourceMap().begin();
-                            it != o.SourceMap().end();)
-                    {
-                        os << "    \"" << it->first << "\" : {\"units\" : \"" << it->second << "\"}";
-                        if (++it != o.SourceMap().end())
-                            os << "," << std::endl;
-                    }
-                    os << std::endl << "  }";
-                }
-                return os;
-            }
+            ///*
+            ///**
+            // * Overload for stream operator - output a meaningful JsonDefinition string from
+            // * an iSensorType Instance
+            // *
+            //friend std::ostream& operator<<(std::ostream& os, const iSensorType& o)
+            //{
+            //    os << dynamic_cast<const iUpmObject&>(o) << "," << std::endl;
+            //    if (!o.SourceMap().empty())
+            //    {
+            //        os << "  \"sources\" :" << std::endl << "  {" << std::endl;
+            //        for(std::map<std::string, std::string>::const_iterator it = o.SourceMap().begin();
+            //                it != o.SourceMap().end();)
+            //        {
+            //            os << "    \"" << it->first << "\" : {\"units\" : \"" << it->second << "\"}";
+            //            if (++it != o.SourceMap().end())
+            //                os << "," << std::endl;
+            //        }
+            //        os << std::endl << "  }";
+            //    }
+            //    return os;
+            //}
 
-            /**
-             * Overload for stream operator - output a meaningful JsonDefinition string from
-             * an iSensorType Instance
-             */
-            friend std::ostream& operator<<(std::ostream& os, const iSensorType* o)
-            { return os << *o; }
+            ///**
+            // * Overload for stream operator - output a meaningful JsonDefinition string from
+            // * an iSensorType Instance
+            // *
+            //friend std::ostream& operator<<(std::ostream& os, const iSensorType* o)
+            //{ return os << *o; }
+            //*/
     };
 }

@@ -62,7 +62,7 @@ IMS::IMS(int16_t i2c_bus, int16_t i2c_address) :
 }
 
 /* Added for interface implementation */
-std::map<std::string, float> IMS::Light(std::vector<std::string> sources)
+std::map<std::string, float> IMS::LightForSources(std::vector<std::string> sources)
 {
     std::map<std::string, float> ret;
 
@@ -76,7 +76,7 @@ std::map<std::string, float> IMS::Light(std::vector<std::string> sources)
 }
 
 /* Added for interface implementation */
-std::map<std::string, float> IMS::Temperature(std::vector<std::string> sources)
+std::map<std::string, float> IMS::TemperatureForSources(std::vector<std::string> sources)
 {
     std::map<std::string, float> ret;
 
@@ -87,7 +87,7 @@ std::map<std::string, float> IMS::Temperature(std::vector<std::string> sources)
 }
 
 /* Added for interface implementation */
-std::map<std::string, float> IMS::GetMoisture(std::vector<std::string> sources)
+std::map<std::string, float> IMS::GetMoistureForSources(std::vector<std::string> sources)
 {
     std::map<std::string, float> ret;
 

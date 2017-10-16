@@ -1,7 +1,6 @@
 #pragma once
 
 #include <map>
-#include <ostream>
 #include <sstream>
 #include <string>
 
@@ -22,11 +21,14 @@ namespace upm
             virtual ~iUpmObject() {}
             virtual std::string Name() const = 0;
             virtual std::string Description() const = 0;
-            virtual std::string Version() const {return ::Version();}
+            virtual std::string LibraryVersion() const {return ::LibraryVersion();}
             virtual std::string JsonDefinition() const
             {
                 std::stringstream ss;
-                ss << "{" << std::endl << this << std::endl << "}";
+                ss << "{" << std::endl
+                   << "  \"name\" : \"" << Name() << "\"," << std::endl
+                   << "  \"description\" : \"" << Description() << "\""
+                   << std::endl << "}";
                 return ss.str();
             }
 
@@ -39,14 +41,15 @@ namespace upm
              */
             std::map<t_getJson, iUpmObject*> _children;
 
-            friend std::ostream& operator<<(std::ostream& os, const iUpmObject& o)
-            {
-                return os << "  \"name\" : \"" << o.Name() << "\"," << std::endl
-                    << "  \"description\" : \"" << o.Description() << "\"";
-            }
+            ///*
+            //friend std::ostream& operator<<(std::ostream& os, const iUpmObject& o)
+            //{
+            //    return os << "  \"name\" : \"" << o.Name() << "\"," << std::endl
+            //        << "  \"description\" : \"" << o.Description() << "\"";
+            //}
 
-            friend std::ostream& operator<<(std::ostream& os, const iUpmObject* o)
-            { return os << *o; }
+            //friend std::ostream& operator<<(std::ostream& os, const iUpmObject* o)
+            //{ return os << *o; }
+            //*/
     };
-
 }

@@ -32,11 +32,7 @@ namespace upm
              *
              * @return Map of sources to values.
              */
-#if defined(SWIGJAVA)
-            virtual float PressureFloat(std::string source)
-#else
             virtual float Pressure(std::string source)
-#endif
             {
                 std::map<std::string, float> vals = Pressure(std::vector<std::string>(1, source));
 

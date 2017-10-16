@@ -1,3 +1,5 @@
+#ifndef __UPM_I__
+#define __UPM_I__
 %include "std_string.i"
 %include "stdint.i"
 %include "upm_exception.i"
@@ -33,7 +35,6 @@ void cleanUp()
     {;}
 }
 %}
-void cleanUp();
 #endif
 
 #if (SWIGJAVA)
@@ -43,3 +44,5 @@ void cleanUp();
 
 // Disable nested struct warnings
 #pragma SWIG nowarn=312,325
+
+#endif

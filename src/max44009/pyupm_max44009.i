@@ -1,12 +1,8 @@
 %module pyupm_max44009
-%include "../upm.i"
-// Include doxygen-generated documentation
+
+/* If documentation is enabled, a full "pyupm_doxy2swig.i file will be
+* generated and used...  Otherwise, use a stub */
 %include "pyupm_doxy2swig.i"
 
 
-%include "stdint.i"
-
-%include "max44009.hpp"
-%{
-    #include "max44009.hpp"
-%}
+%include "common.i"

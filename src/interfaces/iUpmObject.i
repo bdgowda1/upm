@@ -1,7 +1,14 @@
-/* Include global UPM interface file */
-%include "../upm.i"
+#if (SWIGJAVA)
+#if SWIG_VERSION >= 0x030009
+%include "swiginterface.i"
+%interface_impl(upm::iUpmObject);
+%pragma(java) moduleimports=%{
+import upm_interfaces.*;
+%}
+#endif
+#endif
 
-%include "stl.i"
-%include "std_string.i"
-
-%include "iUpmObject.hpp"
+%{
+#include "iUpmObject.hpp"
+%}
+%import "iUpmObject.hpp"

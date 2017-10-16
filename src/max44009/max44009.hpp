@@ -106,7 +106,7 @@ namespace upm {
  * @snippet max44009.cxx Interesting
  *
  */
-class MAX44009 : public iLightSensor {
+class MAX44009 : public virtual iLightSensor {
     public:
         /**
          * Instantiate a MAX44009 object

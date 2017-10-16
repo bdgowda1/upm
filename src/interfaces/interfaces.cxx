@@ -1,1 +1,12 @@
+#include "iPressureSensor.hpp"
+#include "iMraa.hpp"
+#include "iLightController.hpp"
+#include "iCO2Sensor.hpp"
+#include "iADC.hpp"
+#include "iMoistureSensor.hpp"
 #include "iLightSensor.hpp"
+#include "iHumiditySensor.hpp"
+#include "iTemperatureSensor.hpp"
+#include "iSensorType.hpp"
+#include "iUpmObject.hpp"
+

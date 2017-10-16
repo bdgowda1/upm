@@ -26,6 +26,10 @@
 #include <string>
 #include <mraa/uart.hpp>
 
+#include "interfaces/iTemperatureSensor.hpp"
+#include "interfaces/iHumiditySensor.hpp"
+#include "interfaces/iMraa.hpp"
+
 namespace upm {
 
   /**
@@ -53,7 +57,10 @@ namespace upm {
    * @snippet rhusb.cxx Interesting
    */
 
-  class RHUSB {
+  class RHUSB :
+     public virtual iTemperatureSensor,
+     public virtual iHumiditySensor
+{
   public:
     /**
      * RHUSB constructor
@@ -65,7 +72,19 @@ namespace upm {
     /**
      * RHUSB Destructor
      */
-    ~RHUSB();
+    virtual ~RHUSB() {};
+
+    /** Return the name of this device */
+    virtual std::string Name() const {return "RHUSB";}
+
+    /** Return the description of this device */
+    virtual std::string Description() const {return "Omega RH-USB Temperature and Humidity Sensor";}
+
+    /* Provide an implementation of a method to get sensor values by source */
+    virtual std::map<std::string, float> TemperatureForSources(std::vector<std::string> sources);
+
+    /* Provide an implementation of a method to get sensor values by source */
+    virtual std::map<std::string, float> HumidityForSources(std::vector<std::string> sources);
 
     /**
      * Read current values from the sensor and update internal stored
@@ -115,4 +134,9 @@ namespace upm {
     float m_temperature;
     float m_humidity;
   };
+}
+
+upm::RHUSB* upm_create(const std::string& init_str)
+{
+    return new upm::RHUSB(init_str);
 }

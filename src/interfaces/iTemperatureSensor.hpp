@@ -21,7 +21,7 @@ namespace upm
              *
              * @return Map of sources to values.
              */
-            virtual std::map<std::string, float> Temperature() {return Temperature(Sources());}
+            virtual std::map<std::string, float> TemperatureAll() {return TemperatureForSources(Sources());}
 
             /**
              * Read and return a single value from the source provided
@@ -32,13 +32,9 @@ namespace upm
              *
              * @return Map of sources to values.
              */
-#if defined(SWIGJAVA)
-            virtual float TemperatureFloat(std::string source)
-#else
-            virtual float Temperature(std::string source)
-#endif
+            virtual float TemperatureForSource(std::string source)
             {
-                std::map<std::string, float> vals = Temperature(std::vector<std::string>(1, source));
+                std::map<std::string, float> vals = TemperatureForSources(std::vector<std::string>(1, source));
 
                 if (vals.empty())
                 {
@@ -62,7 +58,7 @@ namespace upm
              *
              * @return Map of sources to values.
              */
-            virtual std::map<std::string, float> Temperature(std::vector<std::string> sources) = 0;
+            virtual std::map<std::string, float> TemperatureForSources(std::vector<std::string> sources) = 0;
 
             /**
              * Add a pointer to this type and a proxy function pointer for
@@ -100,7 +96,7 @@ namespace upm
                 /* Downcast to reference (throws if cast fails) */
                 iTemperatureSensor& ref = dynamic_cast<iTemperatureSensor&>(*inst);
 
-                std::map<std::string, float> data = ref.Temperature();
+                std::map<std::string, float> data = ref.TemperatureAll();
 
                 for (std::map<std::string, float>::const_iterator it = data.begin();
                         it != data.end();)

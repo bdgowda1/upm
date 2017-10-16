@@ -21,7 +21,7 @@ namespace upm
              *
              * @return Map of sources to values.
              */
-            virtual std::map<std::string, float> Light() {return Light(Sources());}
+            virtual std::map<std::string, float> LightAll() {return LightForSources(Sources());}
 
             /**
              * Read and return a single value from the source provided
@@ -32,9 +32,9 @@ namespace upm
              *
              * @return Map of sources to values.
              */
-            virtual float Light(std::string source)
+            virtual float LightForSource(std::string source)
             {
-                std::map<std::string, float> vals = Light(std::vector<std::string>(1, source));
+                std::map<std::string, float> vals = LightForSources(std::vector<std::string>(1, source));
 
                 if (vals.empty())
                 {
@@ -58,7 +58,7 @@ namespace upm
              *
              * @return Map of sources to values.
              */
-            virtual std::map<std::string, float> Light(std::vector<std::string> sources) = 0;
+            virtual std::map<std::string, float> LightForSources(std::vector<std::string> sources) = 0;
 
             /**
              * Add a pointer to this type and a proxy function pointer for
@@ -74,9 +74,9 @@ namespace upm
              *
              * @return JSON string of light values
              */
-            virtual std::string JsonLight() const
+            virtual std::string JsonLight()
             {
-                return "{" + _JsonLight((iLightSensor*)this) + "}";
+                return "{" + _JsonLight(dynamic_cast<iLightSensor*>(this)) + "}";
             }
 
         private:
@@ -96,7 +96,7 @@ namespace upm
                 /* Downcast to reference (throws if cast fails) */
                 iLightSensor& ref = dynamic_cast<iLightSensor&>(*inst);
 
-                std::map<std::string, float> data = ref.Light();
+                std::map<std::string, float> data = ref.LightAll();
 
                 for (std::map<std::string, float>::const_iterator it = data.begin();
                         it != data.end();)

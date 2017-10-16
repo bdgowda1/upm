@@ -1,8 +1,11 @@
 #pragma once
 
-#include <string>
+#define _UPM_VERSION_STRING_ "@upm_VERSION_STRING@"
 
-static std::string Version()
+namespace
 {
-    return "@upm_VERSION_STRING@";
+    const char* LibraryVersion()
+    {
+        return _UPM_VERSION_STRING_;
+    }
 }

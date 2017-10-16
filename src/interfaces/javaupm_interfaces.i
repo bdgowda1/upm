@@ -1,14 +1,28 @@
 %module javaupm_interfaces
 
-%import "../_upm.i"
+#if SWIG_VERSION >= 0x030009
+%include "swiginterface.i"
+%interface_impl(upm::iUpmObject);
+%interface_impl(upm::iSensorType);
+%interface_impl(upm::iMraa);
+%interface_impl(upm::iCO2Sensor);
+%interface_impl(upm::iHumiditySensor);
+%interface_impl(upm::iLightController);
+%interface_impl(upm::iLightSensor);
+%interface_impl(upm::iMoistureSensor);
+%interface_impl(upm::iPressureSensor);
+%interface_impl(upm::iTemperatureSensor);
+#endif
 
-%include javaupm_iModuleStatus.i
-%include javaupm_iADC.i
-%include javaupm_iCO2Sensor.i
-%include javaupm_iHumiditySensor.i
-%include javaupm_iLightController.i
-%include javaupm_iLightSensor.i
-%include javaupm_iPressureSensor.i
-%include javaupm_iTemperatureSensor.i
+%include "common.i"
 
-JAVA_JNI_LOADLIBRARY(javaupm_interfaces)
+%pragma(java) jniclasscode=%{
+    static {
+        try {
+            System.loadLibrary("javaupm_interfaces");
+        } catch (UnsatisfiedLinkError e) {
+            System.err.println("Native code library failed to load. \n" + e);
+            System.exit(1);
+        }
+    }
+%}
