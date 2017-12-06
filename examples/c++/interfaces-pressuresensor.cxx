@@ -73,7 +73,7 @@ main()
     std::cout << "Pressure sensor " << sensor->Name() << " detected" << std::endl;
 
     try {
-        std::map<std::string, float> values = sensor->Pressure();
+        std::map<std::string, float> values = sensor->PressureAll();
         for (std::map<std::string, float>::const_iterator it = values.begin();
                 it != values.end(); ++it)
             std::cout << it->first << " = " << it->second

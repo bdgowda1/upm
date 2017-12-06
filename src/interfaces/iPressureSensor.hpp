@@ -21,7 +21,7 @@ namespace upm
              *
              * @return Map of sources to values.
              */
-            virtual std::map<std::string, float> Pressure() {return Pressure(Sources());}
+            virtual std::map<std::string, float> PressureAll();
 
             /**
              * Read and return a single value from the source provided
@@ -32,23 +32,7 @@ namespace upm
              *
              * @return Map of sources to values.
              */
-            virtual float Pressure(std::string source)
-            {
-                std::map<std::string, float> vals = Pressure(std::vector<std::string>(1, source));
-
-                if (vals.empty())
-                {
-                    std::stringstream ss;
-                    ss << __FUNCTION__ << " sensor does not provide source: '"
-                        << source << ".  Valid sources are: {";
-                    std::copy(Sources().begin(), Sources().end() - 1,
-                            std::ostream_iterator<std::string>(ss, ", "));
-                    ss << Sources().back() << "}";
-                    throw std::invalid_argument(ss.str());
-                }
-
-                return vals[source];
-            }
+            virtual float PressureForSource(std::string source);
 
             /**
              * Read and return all values for this sensor for the provided
@@ -58,26 +42,20 @@ namespace upm
              *
              * @return Map of sources to values.
              */
-            virtual std::map<std::string, float> Pressure(std::vector<std::string> sources) = 0;
+            virtual std::map<std::string, float> PressureForSources(std::vector<std::string> sources) = 0;
 
             /**
              * Add a pointer to this type and a proxy function pointer for
              * serializing all values from this sensor type.
              */
-            iPressureSensor()
-            {
-                AddSerializer(this, &_JsonPressure);
-            }
+            iPressureSensor();
 
             /**
              * Read and return all values for this sensor as JSON
              *
              * @return JSON string of pressure values
              */
-            virtual std::string JsonPressure() const
-            {
-                return "{" + _JsonPressure((iPressureSensor*)this) + "}";
-            }
+            virtual std::string JsonPressure() const;
 
         private:
             /**
@@ -89,24 +67,6 @@ namespace upm
              *
              * @return JSON string of pressure values (minus wrapping '{' and '}'
              */
-            static std::string _JsonPressure(iUpmObject * inst)
-            {
-                std::stringstream ss;
-
-                /* Downcast to reference (throws if cast fails) */
-                iPressureSensor& ref = dynamic_cast<iPressureSensor&>(*inst);
-
-                std::map<std::string, float> data = ref.Pressure();
-
-                for (std::map<std::string, float>::const_iterator it = data.begin();
-                        it != data.end();)
-                {
-                    ss << "\"" << it->first << "\" : {\"value\" : " << it->second
-                        << ", \"units\" : \"" << ref.Unit(it->first) << "\"}";
-                    if (++it != data.end()) ss << "," << std::endl;
-                }
-
-                return ss.str();
-            }
+            static std::string _JsonPressure(iUpmObject * inst);
     };
 }

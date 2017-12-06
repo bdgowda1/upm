@@ -86,11 +86,8 @@ class SI1132 : public iLightSensor {
         /** Return the description of this device */
         virtual std::string Description() const {return "UV and ambient light sensor";}
 
-        /* Expose all base methods for Light */
-        using iLightSensor::Light;
-
         /* Provide an implementation of a method to get sensor values by source */
-        virtual std::map<std::string, float> Light(std::vector<std::string> sources);
+        virtual std::map<std::string, float> LightForSources(std::vector<std::string> sources);
 
     private:
         /* Disable implicit copy and assignment operators */

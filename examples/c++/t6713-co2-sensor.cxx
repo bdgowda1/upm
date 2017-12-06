@@ -52,7 +52,7 @@ main()
     std::cout << "CO2 sensor " << cO2Sensor->Name() << " detected" << std::endl;
     while (true) {
         try {
-            uint16_t value = cO2Sensor->CO2(cO2Sensor->Sources()[0]);
+            uint16_t value = cO2Sensor->CO2ForSource(cO2Sensor->Sources()[0]);
             std::cout << "CO2 level = " << value << cO2Sensor->Units()[0] << std::endl;
         } catch (std::exception& e) {
             std::cerr << e.what() << std::endl;

@@ -224,7 +224,7 @@ void SI1132::sleepMs(int mseconds)
     while ( ( nanosleep( &sleepTime, &sleepTime ) != 0 ) && ( errno == EINTR ) );
 }
 
-std::map<std::string, float> SI1132::Light(std::vector<std::string> sources)
+std::map<std::string, float> SI1132::LightForSources(std::vector<std::string> sources)
 {
     std::map<std::string, float> ret;
 

@@ -245,7 +245,7 @@ STATUS T6713::getStatus()
     }
 }
 
-std::map<std::string, float> T6713::CO2(std::vector<std::string> sources)
+std::map<std::string, float> T6713::CO2ForSources(std::vector<std::string> sources)
 {
     std::map<std::string, float> ret;
 

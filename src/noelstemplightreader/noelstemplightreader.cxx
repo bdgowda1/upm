@@ -4,7 +4,7 @@
 
 using namespace upm;
 
-std::map<std::string, float> NoelsTempLightReader::Light(std::vector<std::string> sources)
+std::map<std::string, float> NoelsTempLightReader::LightForSources(std::vector<std::string> sources)
 {
     std::map<std::string, float> ret;
 
@@ -16,7 +16,7 @@ std::map<std::string, float> NoelsTempLightReader::Light(std::vector<std::string
     return ret;
 }
 
-std::map<std::string, float> NoelsTempLightReader::Temperature(std::vector<std::string> sources)
+std::map<std::string, float> NoelsTempLightReader::TemperatureForSources(std::vector<std::string> sources)
 {
     std::map<std::string, float> ret;
 

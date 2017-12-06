@@ -38,15 +38,13 @@ namespace upm
 
             /* Provide the sensor name */
             virtual std::string Name() const {return "LightTemp9000";}
+
             /* Provide a brief sensor description */
             virtual std::string Description() const {return "This is the best light and temperature sensor ever";}
-            /* Expose all base methods for Light */
-            using iLightSensor::Light;
             /* Provide an implementation of a method to get sensor values by source */
-            virtual std::map<std::string, float> Light(std::vector<std::string> sources);
-            /* Expose all base methods for Temperature */
-            using iTemperatureSensor::Temperature;
+            virtual std::map<std::string, float> LightForSources(std::vector<std::string> sources);
+
             /* Provide an implementation of a method to get sensor values by source */
-            virtual std::map<std::string, float> Temperature(std::vector<std::string> sources);
+            virtual std::map<std::string, float> TemperatureForSources(std::vector<std::string> sources);
     };
 }

@@ -83,7 +83,7 @@ main()
     std::cout << "Temperature sensor " << sensor->Name() << " detected" << std::endl;
 
     try {
-        std::map<std::string, float> values = sensor->Temperature();
+        std::map<std::string, float> values = sensor->TemperatureAll();
         for (std::map<std::string, float>::const_iterator it = values.begin();
                 it != values.end(); ++it)
             std::cout << it->first << " = " << it->second

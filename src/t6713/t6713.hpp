@@ -133,11 +133,8 @@ class T6713 : public iCO2Sensor {
         /** Return the description of this device */
         virtual std::string Description() const {return "I2C/UART high accuracy CO2 sensor";}
 
-        /* Expose all base methods for CO2 */
-        using iCO2Sensor::CO2;
-
         /* Provide an implementation of a method to get sensor values by source */
-        virtual std::map<std::string, float> CO2(std::vector<std::string> sources);
+        virtual std::map<std::string, float> CO2ForSources(std::vector<std::string> sources);
 
     private:
         mraa::Result runCommand(t6713_co2::MODBUS_COMMANDS command);

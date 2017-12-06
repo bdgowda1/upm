@@ -133,8 +133,7 @@ class MAX44009 : public virtual iLightSensor {
 
         virtual std::string Name() const {return "max44009";}
         virtual std::string Description() const {return "I2C Low-power Digital Ambient Light Sensor";}
-        using iLightSensor::Light;
-        virtual std::map<std::string, float> Light(std::vector<std::string> sources);
+        virtual std::map<std::string, float> LightForSources(std::vector<std::string> sources);
 
     private:
         /* Disable implicit copy and assignment operators */

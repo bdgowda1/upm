@@ -83,8 +83,8 @@ namespace upm
        * @throws std::runtime_error
        */
        virtual int getBrightness() = 0;
-       
-       virtual ~ILightController() {}
+
+       virtual ~ILightController();
     };
 
 }

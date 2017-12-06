@@ -22,16 +22,17 @@
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import upm_noelstemplightreader.*;
 
 public class NoelsTempLightReaderSample {
     public static void main (String args[]) throws InterruptedException {
         //! [Interesting]
         // Instantiate new sensor instance
-        upm_noelstemplightreader.NoelsTempLightReader sensor = new upm_noelstemplightreader.NoelsTempLightReader(0);
+        upm_noelstemplightreader.NoelsTempLightReader sensor = new upm_noelstemplightreader.NoelsTempLightReader();
 
         while (true) {
 
-            System.out.println("NoelsTempLightReader says: " + sensor.helloWorld());
+            //System.out.println("NoelsTempLightReader says: " + sensor.Name());
 
             // Repeate every 2 seconds
             Thread.sleep(2000);

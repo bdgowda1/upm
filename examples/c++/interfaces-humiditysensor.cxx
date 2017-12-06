@@ -76,7 +76,7 @@ main()
     std::cout << "Humidity sensor " << sensor->Name() << " detected" << std::endl;
 
     try {
-        std::map<std::string, float> values = sensor->Humidity();
+        std::map<std::string, float> values = sensor->HumidityAll();
         for (std::map<std::string, float>::const_iterator it = values.begin();
                 it != values.end(); ++it)
             std::cout << it->first << " = " << it->second

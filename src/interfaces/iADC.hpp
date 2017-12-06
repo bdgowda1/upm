@@ -26,20 +26,20 @@
 
 #include <stdint.h>
 
-#include "iUpmObject.hpp"
+#include "iSensorType.hpp"
 
 namespace upm
 {
     /**
      * @brief Interface for ADC Sensors
      */
-    class IADC : public virtual iUpmObject
+    class IADC : public virtual iSensorType
     {
         public:
             virtual unsigned int getResolutionInBits() = 0;
             virtual unsigned int getNumInputs() = 0;
             virtual uint16_t getRawValue(unsigned int input) = 0;
             virtual float getVoltage(unsigned int input) = 0;
-            virtual ~IADC() {}
+            virtual ~IADC();
     };
 }

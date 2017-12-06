@@ -11,7 +11,17 @@ upm_mixed_module_init (NAME interfaces
             iSensorType.hpp
             iTemperatureSensor.hpp
             iUpmObject.hpp
-    CPP_SRC iMraa.cxx interfaces.cxx
+    CPP_SRC iADC.cxx
+            iCO2Sensor.cxx
+            iHumiditySensor.cxx
+            iLightController.cxx
+            iLightSensor.cxx
+            iMoistureSensor.cxx
+            iMraa.cxx
+            iPressureSensor.cxx
+            iSensorType.cxx
+            iTemperatureSensor.cxx
+            iUpmObject.cxx
     REQUIRES mraa utilities-c)
 
 # Add a PUBLIC include directory to the CMAKE src dir

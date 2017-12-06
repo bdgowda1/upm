@@ -55,7 +55,7 @@ void BME280::setOversampleRateHumidity(BME280_OSRS_H_T rate)
     bmp280_set_oversample_rate_humidity(m_bmp280, rate);
 }
 
-std::map<std::string, float> BME280::Humidity(std::vector<std::string> sources)
+std::map<std::string, float> BME280::HumidityForSources(std::vector<std::string> sources)
 {
     std::map<std::string, float> ret;
 

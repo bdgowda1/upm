@@ -211,7 +211,7 @@ int MS5611::getPressurePa()
     return pressure;
 }
 
-std::map<std::string, float> MS5611::Temperature(std::vector<std::string> sources)
+std::map<std::string, float> MS5611::TemperatureForSources(std::vector<std::string> sources)
 {
     std::map<std::string, float> ret;
 
@@ -221,7 +221,7 @@ std::map<std::string, float> MS5611::Temperature(std::vector<std::string> source
     return ret;
 }
 
-std::map<std::string, float> MS5611::Pressure(std::vector<std::string> sources)
+std::map<std::string, float> MS5611::PressureForSources(std::vector<std::string> sources)
 {
     std::map<std::string, float> ret;
 

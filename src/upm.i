@@ -7,11 +7,6 @@
 /* Import additional SWIG helps (not exposed in wrapper) */
 %import _upm.i
 
-%{
-    #include "version.hpp"
-%}
-%include "version.hpp"
-
 %apply int { speed_t };
 %apply int { mraa_result_t };
 %apply int { mraa::Result };

@@ -78,7 +78,7 @@ MAX44009::getVisibleRaw() {
     return *value;
 }
 
-std::map<std::string, float> MAX44009::Light(std::vector<std::string> sources)
+std::map<std::string, float> MAX44009::LightForSources(std::vector<std::string> sources)
 {
     std::map<std::string, float> ret;
 

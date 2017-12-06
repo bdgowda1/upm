@@ -91,17 +91,11 @@ namespace upm {
         /** Return the description of this device */
         virtual std::string Description() const {return "Atmospheric pressure sensor";}
 
-        /* Expose all base methods for Temperature */
-        using iTemperatureSensor::Temperature;
+        /* Provide an implementation of a method to get sensor values by source */
+        virtual std::map<std::string, float> TemperatureForSources(std::vector<std::string> sources);
 
         /* Provide an implementation of a method to get sensor values by source */
-        virtual std::map<std::string, float> Temperature(std::vector<std::string> sources);
-
-        /* Expose all base methods for Pressure */
-        using iPressureSensor::Pressure;
-
-        /* Provide an implementation of a method to get sensor values by source */
-        virtual std::map<std::string, float> Pressure(std::vector<std::string> sources);
+        virtual std::map<std::string, float> PressureForSources(std::vector<std::string> sources);
 
         /**
          * Query the device and update the internal state.  This

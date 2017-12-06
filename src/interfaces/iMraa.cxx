@@ -14,90 +14,87 @@
         std::string(protocol) + " from " + std::string(fullstring) + ", cause: " + \
         std::string(failure))
 
-namespace
+using namespace upm;
+
+template<typename Out>
+void split(const std::string &s, char delim, Out result)
 {
-    template<typename Out>
-        void split(const std::string &s, char delim, Out result)
-        {
-            std::stringstream ss;
-            ss.str(s);
-            std::string item;
-            while (std::getline(ss, item, delim))
-                *(result++) = item;
-        }
-
-    std::vector<std::string> split(const std::string &s, char delim)
-    {
-        std::vector<std::string> elems;
-        split(s, delim, std::back_inserter(elems));
-        return elems;
-    }
-
-    uint32_t str2uint32(const std::string &number)
-    {
-        std::string lwr = number;
-        std::transform(lwr.begin(), lwr.end(), lwr.begin(), ::tolower);
-        uint32_t ret = 0;
-        std::stringstream ss;
-        if ((lwr.compare(0, 2, "0x") == 0) &&
-                (lwr.substr(2).find_first_not_of("0123456789abcdef") == std::string::npos))
-        {
-            ss << std::hex << lwr.substr(2);
-            ss >> ret;
-        }
-        else if (!lwr.empty() && lwr.find_first_not_of("0123456789") == std::string::npos)
-        {
-            ss << lwr;
-            ss >> ret;
-        }
-        else
-            throw std::runtime_error("Cannot convert '" + number + "' to an integer");
-
-        return ret;
-    }
-
-    std::map<std::string, mraa::Mode> _mraa_Mode =
-    {
-        {"strong", mraa::MODE_STRONG},
-        {"pullup", mraa::MODE_PULLUP},
-        {"pulldown", mraa::MODE_PULLDOWN},
-        {"hiz", mraa::MODE_HIZ},
-    };
-
-    std::map<std::string, mraa::Dir> _mraa_Dir =
-    {
-        {"out", mraa::DIR_OUT},
-        {"in", mraa::DIR_IN},
-        {"high", mraa::DIR_OUT_HIGH},
-        {"low", mraa::DIR_OUT_LOW},
-    };
-    std::map<std::string, mraa::Edge> _mraa_Edge =
-    {
-        {"none", mraa::EDGE_NONE},
-        {"both", mraa::EDGE_BOTH},
-        {"rising", mraa::EDGE_RISING},
-        {"falling", mraa::EDGE_FALLING},
-    };
-    std::map<std::string, mraa::InputMode> _mraa_InputMode =
-    {
-        {"active_high", mraa::MODE_IN_ACTIVE_HIGH},
-        {"avtive_low", mraa::MODE_IN_ACTIVE_LOW},
-    };
-    std::map<std::string, mraa::OutputMode> _mraa_OutputMode =
-    {
-        {"open_drain", mraa::MODE_OUT_OPEN_DRAIN},
-        {"push_pull", mraa::MODE_OUT_PUSH_PULL},
-    };
-
-    std::map<std::string, mraa::I2cMode> _mraa_I2cModes =
-    {
-        {"std", mraa::I2C_STD},
-        {"fast", mraa::I2C_FAST},
-        {"high", mraa::I2C_HIGH},
-    };
+    std::stringstream ss;
+    ss.str(s);
+    std::string item;
+    while (std::getline(ss, item, delim))
+        *(result++) = item;
 }
 
-using namespace upm;
+std::vector<std::string> split(const std::string &s, char delim)
+{
+    std::vector<std::string> elems;
+    split(s, delim, std::back_inserter(elems));
+    return elems;
+}
+
+uint32_t str2uint32(const std::string &number)
+{
+    std::string lwr = number;
+    std::transform(lwr.begin(), lwr.end(), lwr.begin(), ::tolower);
+    uint32_t ret = 0;
+    std::stringstream ss;
+    if ((lwr.compare(0, 2, "0x") == 0) &&
+            (lwr.substr(2).find_first_not_of("0123456789abcdef") == std::string::npos))
+    {
+        ss << std::hex << lwr.substr(2);
+        ss >> ret;
+    }
+    else if (!lwr.empty() && lwr.find_first_not_of("0123456789") == std::string::npos)
+    {
+        ss << lwr;
+        ss >> ret;
+    }
+    else
+        throw std::runtime_error("Cannot convert '" + number + "' to an integer");
+
+    return ret;
+}
+
+std::map<std::string, mraa::Mode> _mraa_Mode =
+{
+    {"strong", mraa::MODE_STRONG},
+    {"pullup", mraa::MODE_PULLUP},
+    {"pulldown", mraa::MODE_PULLDOWN},
+    {"hiz", mraa::MODE_HIZ},
+};
+
+std::map<std::string, mraa::Dir> _mraa_Dir =
+{
+    {"out", mraa::DIR_OUT},
+    {"in", mraa::DIR_IN},
+    {"high", mraa::DIR_OUT_HIGH},
+    {"low", mraa::DIR_OUT_LOW},
+};
+std::map<std::string, mraa::Edge> _mraa_Edge =
+{
+    {"none", mraa::EDGE_NONE},
+    {"both", mraa::EDGE_BOTH},
+    {"rising", mraa::EDGE_RISING},
+    {"falling", mraa::EDGE_FALLING},
+};
+std::map<std::string, mraa::InputMode> _mraa_InputMode =
+{
+    {"active_high", mraa::MODE_IN_ACTIVE_HIGH},
+    {"avtive_low", mraa::MODE_IN_ACTIVE_LOW},
+};
+std::map<std::string, mraa::OutputMode> _mraa_OutputMode =
+{
+    {"open_drain", mraa::MODE_OUT_OPEN_DRAIN},
+    {"push_pull", mraa::MODE_OUT_PUSH_PULL},
+};
+
+std::map<std::string, mraa::I2cMode> _mraa_I2cModes =
+{
+    {"std", mraa::I2C_STD},
+    {"fast", mraa::I2C_FAST},
+    {"high", mraa::I2C_HIGH},
+};
 
 iMraa::iMraa()
 {

@@ -21,7 +21,7 @@ namespace upm
              *
              * @return Map of sources to values.
              */
-            virtual std::map<std::string, float> HumidityAll() {return HumidityForSources(Sources());}
+            virtual std::map<std::string, float> HumidityAll();
 
             /**
              * Read and return a single value from the source provided
@@ -32,23 +32,7 @@ namespace upm
              *
              * @return Map of sources to values.
              */
-            virtual float HumidityForSource(std::string source)
-            {
-                std::map<std::string, float> vals = HumidityForSources(std::vector<std::string>(1, source));
-
-                if (vals.empty())
-                {
-                    std::stringstream ss;
-                    ss << __FUNCTION__ << " sensor does not provide source: '"
-                        << source << ".  Valid sources are: {";
-                    std::copy(Sources().begin(), Sources().end() - 1,
-                            std::ostream_iterator<std::string>(ss, ", "));
-                    ss << Sources().back() << "}";
-                    throw std::invalid_argument(ss.str());
-                }
-
-                return vals[source];
-            }
+            virtual float HumidityForSource(std::string source);
 
             /**
              * Read and return all values for this sensor for the provided
@@ -64,20 +48,14 @@ namespace upm
              * Add a pointer to this type and a proxy function pointer for
              * serializing all values from this sensor type.
              */
-            iHumiditySensor()
-            {
-                AddSerializer(this, &_JsonHumidity);
-            }
+            iHumiditySensor();
 
             /**
              * Read and return all values for this sensor as JSON
              *
              * @return JSON string of humidity values
              */
-            virtual std::string JsonHumidity() const
-            {
-                return "{" + _JsonHumidity((iHumiditySensor*)this) + "}";
-            }
+            virtual std::string JsonHumidity() const;
 
         private:
             /**
@@ -89,24 +67,6 @@ namespace upm
              *
              * @return JSON string of humidity values (minus wrapping '{' and '}'
              */
-            static std::string _JsonHumidity(iUpmObject * inst)
-            {
-                std::stringstream ss;
-
-                /* Downcast to reference (throws if cast fails) */
-                iHumiditySensor& ref = dynamic_cast<iHumiditySensor&>(*inst);
-
-                std::map<std::string, float> data = ref.HumidityAll();
-
-                for (std::map<std::string, float>::const_iterator it = data.begin();
-                        it != data.end();)
-                {
-                    ss << "\"" << it->first << "\" : {\"value\" : " << it->second
-                        << ", \"units\" : \"" << ref.Unit(it->first) << "\"}";
-                    if (++it != data.end()) ss << "," << std::endl;
-                }
-
-                return ss.str();
-            }
+            static std::string _JsonHumidity(iUpmObject * inst);
     };
 }

@@ -24,6 +24,5 @@ using upm::iSensorType::JsonValues;
 using upm::iHumiditySensor::JsonHumidity;
 using upm::iHumiditySensor::HumidityAll;
 using upm::iHumiditySensor::HumidityForSources;
-using upm::iUpmObject::LibraryVersion;
 }
 %enddef

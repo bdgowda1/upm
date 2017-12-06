@@ -4,6 +4,9 @@
 %import "iMoistureSensor.i"
 %import "iTemperatureSensor.i"
 
+%include "typemaps.i"
+%include "stdint.i"
+
 %{
     #include "ims.hpp"
 %}

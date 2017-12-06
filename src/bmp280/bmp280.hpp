@@ -94,19 +94,14 @@ namespace upm {
                int cs=-1);
 
         virtual std::string Name() const {return "BMP280";}
+
         virtual std::string Description() const {return "Digital absolute pressure sensor";}
 
-        /* Expose all base methods for Temperature */
-        using iTemperatureSensor::Temperature;
+        /* Provide an implementation of a method to get sensor values by source */
+        virtual std::map<std::string, float> TemperatureForSources(std::vector<std::string> sources);
 
         /* Provide an implementation of a method to get sensor values by source */
-        virtual std::map<std::string, float> Temperature(std::vector<std::string> sources);
-
-        /* Expose all base methods for Pressure */
-        using iPressureSensor::Pressure;
-
-        /* Provide an implementation of a method to get sensor values by source */
-        virtual std::map<std::string, float> Pressure(std::vector<std::string> sources);
+        virtual std::map<std::string, float> PressureForSources(std::vector<std::string> sources);
 
         /**
          * BMP280 Destructor.

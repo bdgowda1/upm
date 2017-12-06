@@ -24,6 +24,5 @@ using upm::iSensorType::JsonValues;
 using upm::iTemperatureSensor::JsonTemperature;
 using upm::iTemperatureSensor::TemperatureAll;
 using upm::iTemperatureSensor::TemperatureForSources;
-using upm::iUpmObject::LibraryVersion;
 }
 %enddef

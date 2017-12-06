@@ -211,7 +211,7 @@ SI7005::disableFastConversionMode( )
     config_reg ^= SI7005_CONFIG_FAST;
 }
 
-std::map<std::string, float> SI7005::Temperature(std::vector<std::string> sources)
+std::map<std::string, float> SI7005::TemperatureForSources(std::vector<std::string> sources)
 {
     std::map<std::string, float> ret;
 
@@ -221,7 +221,7 @@ std::map<std::string, float> SI7005::Temperature(std::vector<std::string> source
     return ret;
 }
 
-std::map<std::string, float> SI7005::Humidity(std::vector<std::string> sources)
+std::map<std::string, float> SI7005::HumidityForSources(std::vector<std::string> sources)
 {
     std::map<std::string, float> ret;
 

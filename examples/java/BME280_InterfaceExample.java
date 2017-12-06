@@ -51,15 +51,15 @@ public class BME280_InterfaceExample
                 System.out.println("Calling Interface Functions: ");
 
                 System.out.println("Compensation Temperature: "
-                                   + t_sensor.getTemperatureCelsius()
+                                   + t_sensor.TemperatureForSource("temperature")
                                    + " C / ");
 
                 System.out.println("Pressure: "
-                                   + p_sensor.getPressurePa()
+                                   + p_sensor.PressureForSource("pressure")
                                    + " Pa");
 
                 System.out.println("Humidity: "
-                                   + h_sensor.getHumidityRelative()
+                                   + h_sensor.HumidityForSource("humidity")
                                    + " %RH");
 
                 System.out.println();

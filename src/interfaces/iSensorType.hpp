@@ -48,29 +48,7 @@ namespace upm
              * Mapping of sources to units, also re-creates the sources
              * and units vector on each add.
              */
-            void AddSource(std::string source, std::string unit)
-            {
-                /* Add the source:unit to the map */
-                _sources_2_units[source] = unit;
-
-                /* Each call regens the sources and units vectors */
-                _sources.clear();
-                _units.clear();
-
-                for(std::map<std::string, std::string>::const_iterator it = SourceMap().begin();
-                        it != SourceMap().end(); ++it)
-                {
-                    _sources.push_back(it->first);
-                    _units.push_back(it->second);
-                }
-
-                /* Uniquify the sources vector */
-                std::sort(_sources.begin(), _sources.end());
-                _sources.erase(std::unique(_sources.begin(), _sources.end()), _sources.end());
-                /* Uniquify the units vector */
-                std::sort(_units.begin(), _units.end());
-                _units.erase(std::unique(_units.begin(), _units.end()), _units.end());
-            }
+            void AddSource(std::string source, std::string unit);
 
         public:
             /**
@@ -79,90 +57,54 @@ namespace upm
              *
              * @return Map of sources to units.
              */
-            const std::map<std::string, std::string>& SourceMap() const { return _sources_2_units;}
+            const std::map<std::string, std::string>& SourceMap() const;
 
             /**
              * Return a vector of all known sources for this sensor.
              *
              * @return Vector of sources
              */
-            const std::vector<std::string>& Sources() const { return _sources; }
+            const std::vector<std::string>& Sources() const;
 
             /**
              * Return a vector of all known units for this sensor.
              *
              * @return Vector of units
              */
-            const std::vector<std::string>& Units() const { return _units; }
+            const std::vector<std::string>& Units() const;
 
             /**
              * Return a unit string given a single source.
              *
              * @return Corresponding unit for source or empty string if not found.
              */
-            virtual const std::string Unit(std::string source) const
-            {
-                std::map<std::string, std::string>::const_iterator it =
-                    SourceMap().find(source);
-                if (it != SourceMap().end())
-                    return it->second;
-                else
-                    return "";
-            }
+            virtual const std::string Unit(std::string source) const;
 
             /**
              * Determine if this sensor has a given source.
              *
              * @return True if source string is available, fails otherwise.
              */
-            virtual const bool HasSource(std::string source) const
-            {
-                return std::find(Sources().begin(), Sources().end(), source) != Sources().end();
-            }
+            virtual const bool HasSource(std::string source) const;
 
             /**
              * Determine if this sensor has a given unit.
              *
              * @return True if unit string is available, fails otherwise.
              */
-            virtual const bool HasUnit(std::string unit) const
-            {
-                return std::find(Units().begin(), Units().end(), unit) != Units().end();
-            }
+            virtual const bool HasUnit(std::string unit) const;
 
             /**
              * Return a JsonDefinition string which defines this sensor
              *
              * @return JsonDefinition-encoded string.
              */
-            virtual std::string JsonDefinition() const
-            {
-                std::stringstream ss;
-
-                ss << "{" << std::endl
-                   << "  \"name\" : \"" << Name() << "\"," << std::endl
-                   << "  \"description\" : \"" << Description() << "\"";
-
-                if (!SourceMap().empty())
-                {
-                    ss << "," << std::endl << "  \"sources\" :" << std::endl << "  {" << std::endl;
-                    for(std::map<std::string, std::string>::const_iterator it = SourceMap().begin();
-                            it != SourceMap().end();)
-                    {
-                        ss << "    \"" << it->first << "\" : {\"units\" : \"" << it->second << "\"}";
-                        if (++it != SourceMap().end())
-                            ss << "," << std::endl;
-                    }
-                    ss << std::endl << "  }";
-                }
-                ss << std::endl << "}";
-                return ss.str();
-            }
+            virtual std::string JsonDefinition() const;
 
             /**
              * Allow derived classes to provide their own destructor
              */
-            virtual ~iSensorType() {}
+            virtual ~iSensorType();
 
             /**
              * @brief Json string of sensor data.
@@ -177,25 +119,7 @@ namespace upm
              *
              *  @return Json-encoded string.
              */
-            virtual std::string JsonValues()
-            {
-                std::stringstream ss;
-                ss << "{" << std::endl;
-                if (!_children.empty())
-                {
-                    /* Iterate over each serializer method */
-                    for (std::map<t_getJson, iUpmObject*>::const_iterator it = _children.begin();
-                            it != _children.end();)
-                    {
-                        // Call static method to serialize data from the derived classes
-                        ss << it->first(it->second);
-                        if (++it != _children.end()) ss << ",";
-                        ss << std::endl;
-                    }
-                }
-                ss << "}";
-                return ss.str();
-            }
+            virtual std::string JsonValues();
 
             ///*
             ///**

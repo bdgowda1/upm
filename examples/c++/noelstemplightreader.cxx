@@ -20,27 +20,27 @@ void printMap(upm::NoelsTempLightReader &sensor, std::map<std::string, float> &d
 int main ()
 {
     upm::NoelsTempLightReader sensor;
-    std::cout << "iUpmObject JsonDefinition..." << std::endl << ((upm::iUpmObject&)sensor) << std::endl << std::endl;
-    std::cout << "iSensorType JsonDefinition..." << std::endl << ((upm::iSensorType&)sensor) << std::endl << std::endl;
-    std::cout << "iMraa JsonDefinition..." << std::endl << ((upm::iMraa&)sensor) << std::endl << std::endl;
-    std::cout << "NoelsTempLightReader JsonDefinition..." << std::endl << sensor << std::endl << std::endl;
+    std::cout << "iUpmObject JsonDefinition..." << std::endl << ((upm::iUpmObject&)sensor).JsonDefinition() << std::endl << std::endl;
+    std::cout << "iSensorType JsonDefinition..." << std::endl << ((upm::iSensorType&)sensor).JsonDefinition() << std::endl << std::endl;
+    std::cout << "iMraa JsonDefinition..." << std::endl << ((upm::iMraa&)sensor).JsonDefinition() << std::endl << std::endl;
+    std::cout << "NoelsTempLightReader JsonDefinition..." << std::endl << sensor.JsonDefinition() << std::endl << std::endl;
 
     std::cout << "Read all light values..." << std::endl;
-    std::map<std::string, float> values = sensor.Light();
+    std::map<std::string, float> values = sensor.LightAll();
     printMap(sensor, values);
 
     std::cout << "Read a single light value for light0..." << std::endl;
-    std::cout << "Single value = " << sensor.Light("light0") << std::endl << std::endl;
+    std::cout << "Single value = " << sensor.LightForSource("light0") << std::endl << std::endl;
 
     try
     {
         std::cout << "Read a single light value for lightX (doesn't exist)..." << std::endl;
-        sensor.Light("lightX");
+        sensor.LightForSource("lightX");
     }
     catch (const std::exception& e) { std::cout << e.what() << std::endl << std::endl;}
 
     std::cout << "Read a light value for lightX (doesn't exist)..." << std::endl;
-    values = sensor.Light(std::vector<std::string>({"lightX"}));
+    values = sensor.LightForSources(std::vector<std::string>({"lightX"}));
     printMap(sensor, values);
 
     std::cout << "Read all values as JsonDefinition..." << std::endl << sensor.JsonValues() << std::endl;

@@ -152,7 +152,7 @@ void BMP280::setUsageMode(BMP280_USAGE_MODE_T mode)
     bmp280_set_usage_mode(m_bmp280, mode);
 }
 
-std::map<std::string, float> BMP280::Temperature(std::vector<std::string> sources)
+std::map<std::string, float> BMP280::TemperatureForSources(std::vector<std::string> sources)
 {
     std::map<std::string, float> ret;
 
@@ -165,7 +165,7 @@ std::map<std::string, float> BMP280::Temperature(std::vector<std::string> source
     return ret;
 }
 
-std::map<std::string, float> BMP280::Pressure(std::vector<std::string> sources)
+std::map<std::string, float> BMP280::PressureForSources(std::vector<std::string> sources)
 {
     std::map<std::string, float> ret;
 

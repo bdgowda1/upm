@@ -12,3 +12,9 @@ This will cause warnings for the stl typemaps - ignore them */
 #pragma SWIG nowarn=302
 //%include "common.i"
 #endif
+
+/* Add the global UPM methods to all wrappers */
+%{
+#include "../upm_library_globals.hpp"
+%}
+%include "../upm_library_globals.hpp"

@@ -86,17 +86,11 @@ class SI7005 :
         /** Return the description of this device */
         virtual std::string Description() const {return "Digital I2C humidity and temperature sensor";}
 
-        /* Expose all base methods for Temperature */
-        using iTemperatureSensor::Temperature;
+        /* Provide an implementation of a method to get sensor values by source */
+        virtual std::map<std::string, float> TemperatureForSources(std::vector<std::string> sources);
 
         /* Provide an implementation of a method to get sensor values by source */
-        virtual std::map<std::string, float> Temperature(std::vector<std::string> sources);
-
-        /* Expose all base methods for Humidity */
-        using iHumiditySensor::Humidity;
-
-        /* Provide an implementation of a method to get sensor values by source */
-        virtual std::map<std::string, float> Humidity(std::vector<std::string> sources);
+        virtual std::map<std::string, float> HumidityForSources(std::vector<std::string> sources);
 
         /**
          * Get temperature measurement.

@@ -440,10 +440,6 @@ endif()
 # UPM common headers
 set (UPM_COMMON_HEADER_DIRS ${CMAKE_HOME_DIRECTORY}/include)
 
-# Generate a C++ header to add functionality to SWIG'ed modules
-configure_file (${PROJECT_SOURCE_DIR}/src/version.hpp.in ${PROJECT_BINARY_DIR}/src/version.hpp @ONLY)
-install(FILES ${PROJECT_BINARY_DIR}/src/version.hpp DESTINATION include/upm)
-
 # UPM source
 add_subdirectory (src)
 

@@ -122,7 +122,7 @@ float BMPX8X::getAltitude(int sealevelPressure)
     return bmpx8x_get_altitude(m_bmpx8x, sealevelPressure);
 }
 
-std::map<std::string, float> BMPX8X::Temperature(std::vector<std::string> sources)
+std::map<std::string, float> BMPX8X::TemperatureForSources(std::vector<std::string> sources)
 {
     std::map<std::string, float> ret;
 
@@ -132,7 +132,7 @@ std::map<std::string, float> BMPX8X::Temperature(std::vector<std::string> source
     return ret;
 }
 
-std::map<std::string, float> BMPX8X::Pressure(std::vector<std::string> sources)
+std::map<std::string, float> BMPX8X::PressureForSources(std::vector<std::string> sources)
 {
     std::map<std::string, float> ret;
 

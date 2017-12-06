@@ -72,7 +72,7 @@ main()
     std::cout << "Light sensor " << sensor->Name() << " detected" << std::endl;
 
     try {
-        std::map<std::string, float> values = sensor->Light();
+        std::map<std::string, float> values = sensor->LightAll();
         for (std::map<std::string, float>::const_iterator it = values.begin();
                 it != values.end(); ++it)
             std::cout << it->first << " = " << it->second

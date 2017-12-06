@@ -91,11 +91,8 @@ namespace upm {
         virtual std::string Name() const {return "BME280";}
         virtual std::string Description() const {return "Digital absolute pressure sensor with humidity";}
 
-        /* Expose all base methods for Humidity */
-        using iHumiditySensor::Humidity;
-
         /* Provide an implementation of a method to get sensor values by source */
-        virtual std::map<std::string, float> Humidity(std::vector<std::string> sources);
+        virtual std::map<std::string, float> HumidityForSources(std::vector<std::string> sources);
 
         /**
          * Return the current measured relative humidity.  update()
