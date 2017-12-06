@@ -89,12 +89,9 @@ class IMS :
         virtual std::string Name() const {return "IMS";}
         virtual std::string Description() const {return "Catnip Electronics I2C moisture sensor";}
 
-        //using iLightSensor::Light;
         virtual std::map<std::string, float> LightForSources(std::vector<std::string> sources);
-        //using iTemperatureSensor::Temperature;
         virtual std::map<std::string, float> TemperatureForSources(std::vector<std::string> sources);
-        //using iMoistureSensor::GetMoisture;
-        virtual std::map<std::string, float> GetMoistureForSources(std::vector<std::string> sources);
+        virtual std::map<std::string, float> MoistureForSources(std::vector<std::string> sources);
 
         /**
          * Write I2C Moisture Sensor registers

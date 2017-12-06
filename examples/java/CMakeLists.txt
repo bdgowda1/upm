@@ -1,34 +1,68 @@
+# The purpose of this CMakeLists.txt is to compile all listed JAVA examples
+# during build time (ensuring that ALL examples compile against their
+# dependency JAVA packages).
+
 find_package(Java REQUIRED)
 include(UseJava)
 
-macro(add_example example_name jar_name)
-    set(example_src "${example_name}.java")
-    set(example_jar "${CMAKE_CURRENT_BINARY_DIR}/../../src/${jar_name}/upm_${jar_name}.jar")
+# Add a JAVA example target for the provided JAVA source file which depends
+# on UPM JAVA targets.
+#
+# Usage:
+#   add_example(example_class_name upm_target_dependency_list)
+#
+# Parameters:
+#   example_class_name: JAVA class name.  This name MUST match the JAVA
+#                       example file name.
+#                       <example_class_name>.java
+#   upm_target_dependency_list: One or more UPM library targets.  This
+#                       function assumes a javaupm_<target> also exists.
+#
+# Examples:
+#   # Creates SensorFooExample JAVA target, depends on target: sensorfoo,
+#   # and will add upm_sensorfoo.jar to the javac classpath.
+#   add_example(SensorFooExample sensorfoo)
+#
+#   # Creates SensorFooExample JAVA target, depends on targets: sensorfoo,
+#   # and interfaces and will add both upm_sensorfoo.jar and upm_interfaces.jar
+#   # to the javac classpath.
+#   add_example(SensorFooExample "sensorfoo;interfaces"")
+#
+function(add_example example_class_name dependency_list)
+    set(example_file "${example_class_name}.java")
 
-    add_jar(${example_name} SOURCES ${example_src} INCLUDE_JARS ${example_jar})
-    add_dependencies(${example_name} javaupm_${jar_name})
-endmacro()
+    # Build a list of all dependency jar files
+    set(jar_file_list "")
 
-macro(add_example_with_path example_name jar_path jar_name)
-    set(example_src "${example_name}.java")
-    set(example_jar "${CMAKE_CURRENT_BINARY_DIR}/../../src/${jar_path}/upm_${jar_name}.jar")
+    # Build a list of all dependency java target names
+    set(java_targets_list "")
 
-    add_jar(${example_name} SOURCES ${example_src} INCLUDE_JARS ${example_jar})
-    add_dependencies(${example_name} javaupm_${jar_name})
-endmacro()
+    # Iterate over the dependencies
+    foreach(dependency ${dependency_list})
+        set(java_target "javaupm_${dependency}")
 
-macro(add_example_multiple_jars example_name example_jar_name jar_name_list)
-    set(example_src "${example_name}.java")
+        # Append to the targets list
+        list(APPEND java_targets_list ${java_target})
 
-    set(list_of_jars "")
-    foreach(jar_name ${jar_name_list})
-        set(example_jar "${CMAKE_CURRENT_BINARY_DIR}/../../src/${jar_name}/upm_${jar_name}.jar")
-        list(APPEND list_of_jars ${example_jar})
+        # If a dependency target does NOT exist, print a warning and skip
+        if (NOT TARGET ${java_target})
+            message(STATUS "Example ${example_file} is missing a required CMake target (${java_target}), skipping...")
+            return()
+        endif()
+
+        # Get the jar for this java_target (saved as a property)
+        get_target_property(jar_file ${java_target} JAR_FILE_ABSOLUTE)
+
+        # Append to the jar list
+        list(APPEND jar_file_list ${jar_file})
     endforeach()
 
-    add_jar(${example_name} SOURCES ${example_src} INCLUDE_JARS ${list_of_jars})
-    add_dependencies(${example_name} javaupm_${example_jar_name})
-endmacro()
+    # Add the jar/s
+    add_jar(${example_class_name} SOURCES ${example_file} INCLUDE_JARS ${jar_file_list})
+
+    # Add a dependency from this jar to all dependency java targets
+    add_dependencies(${example_class_name} ${java_targets_list})
+endfunction()
 
 add_example(A110X_intrSample a110x)
 add_example(A110XSample a110x)
@@ -36,7 +70,7 @@ add_example(ADC121C021Sample adc121c021)
 add_example(Adxl345Sample adxl345)
 add_example(Apds9002 apds9002)
 add_example(BISS0001Sample biss0001)
-add_example_multiple_jars(BMPX8XSample bmpx8x "bmpx8x;interfaces")
+add_example(BMPX8XSample "bmpx8x;interfaces")
 add_example(BuzzerSample buzzer)
 add_example(CJQ4435Sample cjq4435)
 add_example(DS1307Sample ds1307)
@@ -163,7 +197,7 @@ endif()
 if (JPEG_FOUND)
   add_example(VCAP_Example vcap)
 endif()
-add_example_multiple_jars(BMP280_Example bmp280 "bmp280;interfaces")
+add_example(BMP280_Example "bmp280;interfaces")
 add_example(BNO055_Example bno055)
 add_example(BMX055_Example bmx055)
 add_example(NMEAGPS_Example nmea_gps)
@@ -175,10 +209,9 @@ add_example(DFREC_Example dfrec)
 add_example(SHT1X_Example sht1x)
 add_example(MS5803_Example ms5803)
 add_example(ECEZO_Example ecezo)
-add_example(IMS_Example ims)
 add_example(MB704X_Example mb704x)
 add_example(MCP2515_Example mcp2515)
-add_example_multiple_jars(Ads1015Sample ads1x15 "ads1x15;interfaces")
+add_example(Ads1015Sample "ads1x15;interfaces")
 add_example(MAX30100_Example max30100)
 add_example(Ads1115Sample ads1x15)
 add_example(SensorTemplateSample sensortemplate)
@@ -194,31 +227,35 @@ add_example(RN2903_Example rn2903)
 add_example(LIS2DS12_Example lis2ds12)
 add_example(LSM6DS3H_Example lsm6ds3h)
 add_example(LSM6DSL_Example lsm6dsl)
-
-add_example_with_path(Jhd1313m1_lcdSample jhd1313m1 jhd1313m1)
-add_example_with_path(Jhd1313m1Sample jhd1313m1 jhd1313m1)
-add_example_with_path(Lcm1602_i2cSample lcm1602 lcm1602)
-add_example_with_path(Lcm1602_parallelSample lcm1602 lcm1602)
-add_example_with_path(SSD1308_oledSample lcd lcd)
-add_example_with_path(SSD1327_oledSample lcd lcd)
-add_example_multiple_jars(BME280_Example bmp280 "bmp280;interfaces")
+add_example(Jhd1313m1_lcdSample jhd1313m1)
+add_example(Jhd1313m1Sample jhd1313m1)
+add_example(Lcm1602_i2cSample lcm1602)
+add_example(Lcm1602_parallelSample lcm1602)
+add_example(SSD1308_oledSample i2clcd)
+add_example(SSD1327_oledSample i2clcd)
+add_example(BME280_Example "bmp280;interfaces")
 
 if(SWIG_VERSION VERSION_GREATER 3.0.8)
-  add_example_multiple_jars(BME280_InterfaceExample bmp280 "bmp280;interfaces")
+  add_example(BME280_InterfaceExample "bmp280;interfaces")
 endif()
 
-add_example_with_path(BMC150_Example bmx055 bmx055)
-add_example_with_path(BMI055_Example bmx055 bmx055)
+add_example(BMC150_Example bmx055)
+add_example(BMI055_Example bmx055)
 if (OPENZWAVE_FOUND)
-  add_example_with_path(AeotecSS6_Example ozw ozw)
-  add_example_with_path(AeotecSDG2_Example ozw ozw)
-  add_example_with_path(AeotecDW2E_Example ozw ozw)
-  add_example_with_path(AeotecDSB09104_Example ozw ozw)
-  add_example_with_path(TZEMT400_Example ozw ozw)
+  add_example(AeotecSS6_Example ozw)
+  add_example(AeotecSDG2_Example ozw)
+  add_example(AeotecDW2E_Example ozw)
+  add_example(AeotecDSB09104_Example ozw)
+  add_example(TZEMT400_Example ozw)
 endif()
-add_example_with_path(NMEAGPS_I2C_Example nmea_gps nmea_gps)
-add_example_with_path(MCP2515_TXRX_Example mcp2515 mcp2515)
-add_example_with_path(LE910_Example uartat uartat)
-add_example_with_path(SpeakerPWMSample speaker speaker)
-add_example_with_path(RN2903_P2P_RX_Example rn2903 rn2903)
-add_example_with_path(RN2903_P2P_TX_Example rn2903 rn2903)
+add_example(NMEAGPS_I2C_Example nmea_gps)
+add_example(MCP2515_TXRX_Example mcp2515)
+add_example(LE910_Example uartat)
+add_example(SpeakerPWMSample speaker)
+add_example(RN2903_P2P_RX_Example rn2903)
+add_example(RN2903_P2P_TX_Example rn2903)
+
+if(SWIG_VERSION VERSION_GREATER 3.0.8)
+    add_example(RHUSBSample "rhusb;interfaces")
+    add_example(IMS_Example "ims;interfaces")
+endif()

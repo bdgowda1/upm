@@ -2,11 +2,11 @@
 
 using namespace upm;
 
-std::map <std::string, float> iMoistureSensor::GetMoistureAll ()
-{return GetMoistureForSources(Sources());}
+std::map <std::string, float> iMoistureSensor::MoistureAll ()
+{return MoistureForSources(Sources());}
 
-std::map <std::string, float> iMoistureSensor::GetMoistureForSource (std::string source)
-{ return GetMoistureForSources(std::vector<std::string>(1, source)); }
+std::map <std::string, float> iMoistureSensor::MoistureForSource (std::string source)
+{ return MoistureForSources(std::vector<std::string>(1, source)); }
 
 iMoistureSensor::iMoistureSensor ()
 {
@@ -25,7 +25,7 @@ std::string iMoistureSensor::_JsonMoisture (iUpmObject * inst)
     /* Downcast to reference (throws if cast fails) */
     iMoistureSensor& ref = dynamic_cast<iMoistureSensor&>(*inst);
 
-    std::map<std::string, float> data = ref.GetMoistureAll();
+    std::map<std::string, float> data = ref.MoistureAll();
 
     for (std::map<std::string, float>::const_iterator it = data.begin();
             it != data.end();)

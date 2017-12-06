@@ -41,7 +41,7 @@ public class RHUSBSample {
 
 		// Print out info from the sensor interfaces
 		System.out.println("UPM Version:" + System.lineSeparator()
-			+ sensor.Version() + System.lineSeparator());
+			+ upm_rhusb.javaupm_rhusb.LibraryVersion() + System.lineSeparator());
 		System.out.println("JSON Definition:" + System.lineSeparator()
 			+ sensor.JsonDefinition() + System.lineSeparator());
 

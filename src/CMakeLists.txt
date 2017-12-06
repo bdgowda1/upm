@@ -509,6 +509,10 @@ function(upm_swig_java)
         COMMAND ${JAR} cf upm_${libname}.jar upm_${libname}
     )
 
+    # Save the absolute path of the jar file as a property of this java target
+    set_target_properties (javaupm_${libname} PROPERTIES
+        JAR_FILE_ABSOLUTE ${CMAKE_CURRENT_BINARY_DIR}/upm_${libname}.jar)
+
     # Keep track of all JAVA targets
     set(UPM_TARGETS_JAVA ${UPM_TARGETS_JAVA} javaupm_${libname} CACHE INTERNAL "List of JAVA target names")
   endif (NOT ";${JAVASWIG_BLACKLIST};" MATCHES ";${libname};")

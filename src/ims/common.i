@@ -8,7 +8,7 @@
 %include "stdint.i"
 
 %{
-    #include "ims.hpp"
+#include "ims.hpp"
 %}
 
 %include "ims_defs.h"

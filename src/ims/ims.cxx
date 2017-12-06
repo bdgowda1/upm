@@ -87,7 +87,7 @@ std::map<std::string, float> IMS::TemperatureForSources(std::vector<std::string>
 }
 
 /* Added for interface implementation */
-std::map<std::string, float> IMS::GetMoistureForSources(std::vector<std::string> sources)
+std::map<std::string, float> IMS::MoistureForSources(std::vector<std::string> sources)
 {
     std::map<std::string, float> ret;
 

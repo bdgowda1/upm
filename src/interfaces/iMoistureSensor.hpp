@@ -10,9 +10,9 @@ namespace upm
     class iMoistureSensor : public virtual iSensorType
     {
         public:
-            virtual std::map<std::string, float> GetMoistureAll();
-            virtual std::map<std::string, float> GetMoistureForSource(std::string source);
-            virtual std::map<std::string, float> GetMoistureForSources(std::vector<std::string> sources) = 0;
+            virtual std::map<std::string, float> MoistureAll();
+            virtual std::map<std::string, float> MoistureForSource(std::string source);
+            virtual std::map<std::string, float> MoistureForSources(std::vector<std::string> sources) = 0;
 
             iMoistureSensor();
 
