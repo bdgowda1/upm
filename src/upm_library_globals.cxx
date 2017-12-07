@@ -17,7 +17,7 @@ const char* LibraryVersion()
     return UPM_VERSION_STRING;
 }
 
-std::string _static_LibraryAbsolutePath;
+static std::string _static_LibraryAbsolutePath;
 const char* LibraryAbsolutePath()
 {
     /* If this has already been called, return the previous value */
@@ -47,17 +47,20 @@ std::string LibraryLocation()
     return full_path.substr(0,found);
 }
 
-static bool ends_with(std::string const &full_string, std::string const &substr)
-{
-    if (substr.size() > full_string.size()) return false;
-    return std::equal(substr.rbegin(), substr.rend(), full_string.rbegin());
-}
+//static bool ends_with(std::string const &full_string, std::string const &substr)
+//{
+//    if (substr.size() > full_string.size()) return false;
+//    return std::equal(substr.rbegin(), substr.rend(), full_string.rbegin());
+//}
 
 std::string DataDirectory()
 {
     std::string lib_loc = LibraryLocation();
-    if (ends_with(lib_loc, "interfaces"))
-        return lib_loc.substr(0, lib_loc.size() - sizeof("build/src/interfaces")) + "/src";
+
+    /* Is the library in the build directory or installed on the system? */
+    if (lib_loc.find("build/src/" + std::string(LibraryBaseName())) != std::string::npos)
+        return lib_loc.substr(0, lib_loc.find("build/src/" + std::string(LibraryBaseName()))) +
+            "src/";
     else
         return lib_loc.substr(0, lib_loc.find_last_of("/\\")) + "/share/upm";
 }
@@ -68,16 +71,28 @@ static bool exists(const std::string& filename)
     return f.good();
 }
 
-std::string _static_DataDirectory;
+static std::string json_str;
 const char* LibraryJson()
 {
     exists("");
     /* Is there a library JSON definition? */
-    _static_DataDirectory = DataDirectory();
+    std::string datadir = DataDirectory();
 
     /* Let this method return a NULL */
-    if (_static_DataDirectory.empty())
+    if (datadir.empty())
         return NULL;
 
-    return _static_DataDirectory.c_str();
+    /* Attempt to build the path to the library JSON file */
+    std::string json_file = datadir + std::string("/") + LibraryBaseName() +
+        std::string("/") + LibraryBaseName() + std::string(".json");
+
+    /* Make sure the file exists */
+    if (!exists(json_file))
+        return NULL;
+
+    std::ifstream t(json_file);
+    json_str.assign((std::istreambuf_iterator<char>(t)),
+            std::istreambuf_iterator<char>());
+
+    return json_str.c_str();
 }

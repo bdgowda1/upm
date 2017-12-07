@@ -145,7 +145,6 @@ class SI7005 :
         SI7005(const SI7005&) = delete;
         SI7005 &operator=(const SI7005&) = delete;
 
-        int m_pin;
         mraa::Result status;
         uint8_t config_reg;
         float last_temperature;
