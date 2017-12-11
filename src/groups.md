@@ -222,9 +222,9 @@ and is not meant to be installed anywhere.
 @brief Implements iTemperatureSensor
 
 
-@defgroup iadc IADC
+@defgroup iadc iADC
 @ingroup byif
-@brief Implements IADC
+@brief Implements iADC
 
 
 @defgroup ico2sensor ICOSensor

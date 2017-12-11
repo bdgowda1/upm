@@ -33,13 +33,13 @@ namespace upm
     /**
      * @brief Interface for ADC Sensors
      */
-    class IADC : public virtual iSensorType
+    class iADC : public virtual iSensorType
     {
         public:
             virtual unsigned int getResolutionInBits() = 0;
             virtual unsigned int getNumInputs() = 0;
-            virtual uint16_t getRawValue(unsigned int input) = 0;
+            virtual unsigned int getRawValue(unsigned int input) = 0;
             virtual float getVoltage(unsigned int input) = 0;
-            virtual ~IADC();
+            virtual ~iADC();
     };
 }

@@ -67,7 +67,7 @@ ADS1015::getResolutionInBits() {
     return 12;
 }
 
-uint16_t
+unsigned int
 ADS1015::getRawValue(unsigned int input) {
     ADS1X15::ADSMUXMODE mode = getMuxMode(input);
     updateConfigRegister((m_config_reg & ~ADS1X15_MUX_MASK) | mode, true);

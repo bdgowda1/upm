@@ -5,6 +5,7 @@
 %interface_impl(upm::iUpmObject);
 %interface_impl(upm::iSensorType);
 %interface_impl(upm::iMraa);
+%interface_impl(upm::iADC);
 %interface_impl(upm::iCO2Sensor);
 %interface_impl(upm::iHumiditySensor);
 %interface_impl(upm::iLightController);

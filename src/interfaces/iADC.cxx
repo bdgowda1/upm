@@ -1,3 +1,3 @@
 #include "iADC.hpp"
 
-upm::IADC::~IADC () {}
+upm::iADC::~iADC () {}

@@ -85,7 +85,7 @@ namespace upm {
      * @snippet ads1x15-ads1015.cxx Interesting
      * @snippet ads1x15-adc-sensor.cxx Interesting
      */
-    class ADS1015 : public ADS1X15, public IADC {
+    class ADS1015 : public ADS1X15, public iADC {
 
         public:
 
@@ -154,7 +154,7 @@ namespace upm {
              *
              * @return current conversion value
              */
-            uint16_t getRawValue(unsigned int input);
+            unsigned int getRawValue(unsigned int input);
 
             /**
              * Read current voltage for current single ended analogue input
