@@ -9,6 +9,8 @@ upm_mixed_module_init (NAME interfaces
             iMraa.hpp
             iPressureSensor.hpp
             iSensorType.hpp
+            iActuatorType.hpp
+            iServoActuator.hpp
             iTemperatureSensor.hpp
             iUpmObject.hpp
     CPP_SRC iADC.cxx
@@ -20,6 +22,8 @@ upm_mixed_module_init (NAME interfaces
             iMraa.cxx
             iPressureSensor.cxx
             iSensorType.cxx
+            iActuatorType.cxx
+            iServoActuator.cxx
             iTemperatureSensor.cxx
             iUpmObject.cxx
     REQUIRES mraa utilities-c)

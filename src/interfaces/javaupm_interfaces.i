@@ -2,7 +2,11 @@
 
 #if SWIG_VERSION >= 0x030009
 %include "swiginterface.i"
+
+/* Base definitions */
 %interface_impl(upm::iUpmObject);
+
+/* Sensor definitions */
 %interface_impl(upm::iSensorType);
 %interface_impl(upm::iMraa);
 %interface_impl(upm::iADC);
@@ -13,6 +17,11 @@
 %interface_impl(upm::iMoistureSensor);
 %interface_impl(upm::iPressureSensor);
 %interface_impl(upm::iTemperatureSensor);
+
+/* Actuator definitions */
+%interface_impl(upm::iActuatorType);
+%interface_impl(upm::iServoActuator);
+
 #endif
 
 %include "common.i"

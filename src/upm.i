@@ -4,8 +4,7 @@
 %include "stdint.i"
 %include "upm_exception.i"
 
-/* Import additional SWIG helps (not exposed in wrapper) */
-%import _upm.i
+%import "_upm.i"
 
 %apply int { speed_t };
 %apply int { mraa_result_t };

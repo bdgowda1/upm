@@ -26,9 +26,9 @@
 #include <string>
 #include <mraa/uart.hpp>
 
-#include "interfaces/iTemperatureSensor.hpp"
-#include "interfaces/iHumiditySensor.hpp"
-#include "interfaces/iMraa.hpp"
+#include "iTemperatureSensor.hpp"
+#include "iHumiditySensor.hpp"
+#include "iMraa.hpp"
 
 namespace upm {
 
@@ -73,12 +73,6 @@ namespace upm {
      * RHUSB Destructor
      */
     virtual ~RHUSB() {};
-
-    /** Return the name of this device */
-    virtual std::string Name() const {return "RHUSB";}
-
-    /** Return the description of this device */
-    virtual std::string Description() const {return "Omega RH-USB Temperature and Humidity Sensor";}
 
     /* Provide an implementation of a method to get sensor values by source */
     virtual std::map<std::string, float> TemperatureForSources(std::vector<std::string> sources);

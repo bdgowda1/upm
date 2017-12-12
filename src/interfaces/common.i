@@ -45,6 +45,10 @@ so ignore the base implementation */
 #include "iLightController.hpp"
 #include "iHumiditySensor.hpp"
 #include "iCO2Sensor.hpp"
+
+/* Actuator types */
+#include "iActuatorType.hpp"
+#include "iServoActuator.hpp"
 %}
 
 
@@ -59,6 +63,10 @@ so ignore the base implementation */
 %include "iLightController.hpp"
 %include "iHumiditySensor.hpp"
 %include "iCO2Sensor.hpp"
+
+/* Actuator types */
+%include "iActuatorType.hpp"
+%include "iServoActuator.hpp"
 
 /* Add typemaps for the vectors of mraa types used in the interfaces */
 typedef std::vector<mraa::Aio*> vec_aio;

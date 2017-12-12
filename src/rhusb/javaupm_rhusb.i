@@ -6,4 +6,4 @@
 %include "../java_buffer.i"
 %include "common.i"
 
-JAVA_JNI_LOADLIBRARY(javaupm_rhusb);
+JAVA_JNI_LOADLIBRARY(javaupm_rhusb)

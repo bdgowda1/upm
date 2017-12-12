@@ -5,38 +5,77 @@
 #include <regex>
 
 
+#define xstr(s) str(s)
+#define str(s) #s
+
 #include "upm_library_globals.hpp"
+
+#define concat(A, B) A##B
+#define define_upm_create(libname, blah) \
+    void* concat(upm_create_,libname)(const char * init_str) \
+{ \
+       return NULL; \
+}
+define_upm_create(UPM_LIBRARY_BASE_NAME, someotherblah);
+
+/*
+const char* LibraryBaseName()
+{
+    return xstr(UPM_LIBRARY_BASE_NAME);
+}
+*/
+
+const char* LibraryBaseNameForType(void *Type)
+{
+  return "";
+}
 
 const char* LibraryBaseName()
 {
-    return UPM_LIBRARY_BASE_NAME;
+    return LibraryBaseNameForType((void*)LibraryBaseName);
 }
+
 
 const char* LibraryVersion()
 {
-    return UPM_VERSION_STRING;
+    return xstr(UPM_VERSION_STRING);
 }
 
-static std::string _static_LibraryAbsolutePath;
-const char* LibraryAbsolutePath()
+static std::map<std::string, std::string> _static_LibraryAbsolutePath;
+
+const char* LibraryAbsolutePathForType(void *Type)
 {
+    const std::type_info &this_type = typeid(&Type);
+    printf("XXX0.5 type: %s\n", this_type.name());
+
     /* If this has already been called, return the previous value */
-    if (!_static_LibraryAbsolutePath.empty())
-        return _static_LibraryAbsolutePath.c_str();
+    if (!_static_LibraryAbsolutePath[this_type.name()].empty())
+        return _static_LibraryAbsolutePath[this_type.name()].c_str();
 
     Dl_info info;
+
     /* Returns 0 on failure */
-    if (!dladdr((const void*)&LibraryAbsolutePath, &info))
+    if (!dladdr((const void*)&this_type, &info))
+        return NULL;
+    printf("XXX0->%s, %s\n", this_type.name(), info.dli_fname);
+
+    /* Returns 0 on failure */
+    if (!dladdr((const void*)&this_type, &info))
         return NULL;
 
     /* Attempt a realpath */
-    _static_LibraryAbsolutePath = realpath(info.dli_fname, NULL);
+    _static_LibraryAbsolutePath[this_type.name()] = realpath(info.dli_fname, NULL);
 
     /* Let this method return a NULL */
-    if (_static_LibraryAbsolutePath.empty())
+    if (_static_LibraryAbsolutePath[this_type.name()].empty())
         return NULL;
 
-    return _static_LibraryAbsolutePath.c_str();
+    return _static_LibraryAbsolutePath[this_type.name()].c_str();
+}
+
+const char* LibraryAbsolutePath()
+{
+    return LibraryAbsolutePathForType((void*)LibraryAbsolutePath);
 }
 
 std::string LibraryLocation()
@@ -46,12 +85,6 @@ std::string LibraryLocation()
     std::size_t found = full_path.find_last_of("/\\");
     return full_path.substr(0,found);
 }
-
-//static bool ends_with(std::string const &full_string, std::string const &substr)
-//{
-//    if (substr.size() > full_string.size()) return false;
-//    return std::equal(substr.rbegin(), substr.rend(), full_string.rbegin());
-//}
 
 std::string DataDirectory()
 {
@@ -74,7 +107,8 @@ static bool exists(const std::string& filename)
 static std::string json_str;
 const char* LibraryJson()
 {
-    exists("");
+    printf("XXX1 LIBRARY BASE NAME: %s\n", LibraryBaseName());
+
     /* Is there a library JSON definition? */
     std::string datadir = DataDirectory();
 

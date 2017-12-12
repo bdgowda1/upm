@@ -26,16 +26,15 @@
 #include <string>
 #include <mraa/pwm.h>
 
-namespace upm {
+#include "iMraa.hpp"
+#include "iServoActuator.hpp"
 
-#define MIN_PULSE_WIDTH             600
-#define MAX_PULSE_WIDTH             2500
-#define PERIOD                      20000
+namespace upm {
 
 #define HIGH                        1
 #define LOW                         0
 
-#define DEFAULT_WAIT_DISABLE_PWM    0
+#define DEFAULT_WAIT_DISABLE_PWM    false
 
 /**
  * @brief Servo library 
@@ -47,34 +46,24 @@ namespace upm {
  * @defgroup servo libupm-servo
  * @ingroup seeed emax pwm servos gsk
  */
-class Servo {
+class Servo : public virtual iServoActuator, public virtual iMraa {
     public:
-        /**
-         * Instantiates a Servo object
-         *
-         * @param pin Servo pin number
-         */
-        Servo (int pin);
+
+        /* Default constructor */
+        Servo();
 
         /**
          * Instantiates a Servo object
          *
          * @param pin Servo pin number
-         * @param minPulseWidth Minimum pulse width, in microseconds
-         * @param maxPulseWidth Maximum pulse width, in microseconds
+         * @param min_pw_us Minimum pulse width, in microseconds
+         * @param max_pw_us Maximum pulse width, in microseconds
          */
-        Servo (int pin, int minPulseWidth, int maxPulseWidth);
-
-        /**
-         * Instantiates a Servo object
-         *
-         * @param pin Servo pin number
-         * @param minPulseWidth Minimum pulse width, in microseconds
-         * @param maxPulseWidth Maximum pulse width, in microseconds
-         * @param waitAndDisablePwm If 1, PWM is enabled only during the setAngle() execution
-         * for a period of 1 second, and then turned back off. If 0, PWM remains on afterward.
-         */
-        Servo (int pin, int minPulseWidth, int maxPulseWidth, int waitAndDisablePwm);
+        Servo (int pin,
+               int min_pw_us = 600,
+               int max_pw_us = 2500,
+               int period_us = 20000,
+               float max_angle = 180.0);
 
         /**
          * Servo object destructor
@@ -89,20 +78,7 @@ class Servo {
          */
         mraa_result_t setAngle (int angle);
 
-        /**
-         * Halts PWM for this servo and allows it to move freely.
-         */
-        mraa_result_t haltPwm ();
-
-        /**
-         * Returns the name of the component
-         *
-         * @return Name of the component
-         */
-        std::string name()
-        {
-            return m_name;
-        }
+        virtual bool Angle(int angle);
 
         /**
          * Sets the minimum pulse width
@@ -149,20 +125,9 @@ class Servo {
     protected:
         int calcPulseTraveling (int value);
 
-        std::string         m_name;
-        int                 m_servoPin;
-        float               m_maxAngle;
-        mraa_pwm_context    m_pwmServoContext;
-        int                 m_currAngle;
-
-        int                 m_minPulseWidth;
-        int                 m_maxPulseWidth;
-        int                 m_period;
-
-        int                 m_waitAndDisablePwm;
-
-    private:
-        void init (int pin, int minPulseWidth, int maxPulseWidth, int waitAndDisablePwm);
+        int                 m_min_pw_us;
+        int                 m_max_pw_us;
+        int                 m_period_us;
+        float               m_max_angle;
 };
-
 }

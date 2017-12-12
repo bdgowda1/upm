@@ -32,8 +32,8 @@
 
 #include "bmpx8x.h"
 
-#include "interfaces/iPressureSensor.hpp"
-#include "interfaces/iTemperatureSensor.hpp"
+#include "iPressureSensor.hpp"
+#include "iTemperatureSensor.hpp"
 
 namespace upm {
 

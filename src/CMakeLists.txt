@@ -715,8 +715,8 @@ function(upm_module_init)
   if (NOT IS_C_LIBRARY)
     # Share some GLOBAL (per library) info with the library (UPM version and library base name)
     target_compile_definitions(${libname}
-        PRIVATE -DUPM_LIBRARY_BASE_NAME="${libname}"
-                -DUPM_VERSION_STRING="${upm_VERSION_STRING}")
+        PRIVATE -DUPM_LIBRARY_BASE_NAME=${libname}
+                -DUPM_VERSION_STRING=${upm_VERSION_STRING})
 
     # Add a source file which contains the shared GLOBAL info
     target_sources(${libname}
@@ -786,8 +786,14 @@ function(upm_module_init)
       DESTINATION include/upm
       COMPONENT ${CMAKE_PROJECT_NAME}-dev)
 
-  # Install JSON library descriptor files into datadir (if they exist)
+  # Handle build/install for JSON library descriptor file
   if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${basename}.json")
+    # Copy JSON library descriptor file to binary directory (for testing/running from build dir)
+    configure_file("${CMAKE_CURRENT_SOURCE_DIR}/${basename}.json"
+        "${CMAKE_CURRENT_BINARY_DIR}/${basename}.json"
+        COPYONLY)
+
+    # Install JSON library descriptor files into datadir (if they exist)
     install (FILES "${CMAKE_CURRENT_SOURCE_DIR}/${basename}.json"
       DESTINATION ${CMAKE_INSTALL_DATADIR}/upm/${basename}
       COMPONENT ${CMAKE_PROJECT_NAME})

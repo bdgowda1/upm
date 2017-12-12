@@ -29,13 +29,15 @@
 
 using namespace upm;
 
-ES08A::ES08A (int pin) : Servo(pin) {
-    m_name          = "ES08A";
-    m_maxAngle      = 180.0;
-    m_minPulseWidth = 600;
-    m_maxPulseWidth = 2200;
-}
+ES08A::ES08A (int pin) : Servo(pin, 600, 2200) {}
 
-ES08A::~ES08A() {
+ES08A::~ES08A() {}
 
+ES08A::ES08A (const char* init_str): iMraa(init_str)
+{
+    /* iMraa string constructor parses Mraa types, left-overs need
+     * additional parsing */
+    if (_pwm.empty())
+        throw std::runtime_error(std::string(__FUNCTION__) +
+                ": One PWM pin is required.");
 }

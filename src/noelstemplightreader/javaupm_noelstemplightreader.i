@@ -4,4 +4,4 @@
 /* Include the base sensor interface file */
 %include "common.i"
 
-JAVA_JNI_LOADLIBRARY(javaupm_noelstemplightreader);
+JAVA_JNI_LOADLIBRARY(javaupm_noelstemplightreader)

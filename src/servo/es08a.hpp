@@ -50,7 +50,7 @@ namespace upm {
  * @image html es08a.jpg
  * @snippet servo-es08a.cxx Interesting
  */
- class ES08A : public Servo {
+ class ES08A : public virtual Servo {
     public:
         /**
          * Instantiates an ES08A object
@@ -59,10 +59,18 @@ namespace upm {
          */
         ES08A (int pin);
 
+
+        ES08A (const char* init_str);
+
         /**
          * ES08A object destructor
          */
         ~ES08A ();
 };
+
+ES08A * es08a_create(const char* init_str)
+{
+    return new ES08A(init_str);
+}
 
 }

@@ -2,4 +2,4 @@
 
 %include "common.i"
 
-JAVA_JNI_LOADLIBRARY(javaupm_max44009);
+JAVA_JNI_LOADLIBRARY(javaupm_max44009)

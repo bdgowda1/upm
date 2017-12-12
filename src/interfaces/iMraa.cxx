@@ -223,8 +223,26 @@ iMraa::iMraa(const std::string &init_string) : iMraa()
                 }
             case 'o':
                 break;
-            case 'p':
-                break;
+            case 'p': /* p:<pin>[:min_pw_us][:max_pw_us] */
+                {
+                    /* Next chunk should be a pin # */
+                    uint32_t pin = str2uint32(params[1]);
+                    try { _pwm.push_back(new mraa::Pwm(pin)); }
+                    catch (...)
+                    {
+                        std::cerr << "Failing to initialize Pwm from: " +
+                            proto_str << std::endl;
+                        throw;
+                    }
+                    ///* Parse any additional parameters */
+                    ///* Min pulse width in us */
+                    //if (params.size() > 2)
+                    //{
+                    //    if (_pwm.back()->min(_mraa_I2cModes[params[i]]) != mraa::SUCCESS)
+                    //            iMraaThrow("frequency(" + params[i] + ") failed.", "I2C", proto_str);
+                    //}
+                    break;
+                }
             case 's':
                 break;
             case 'u':

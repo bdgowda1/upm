@@ -2,9 +2,9 @@
 
 #include <string>
 
-#include "interfaces/iMraa.hpp"
-#include "interfaces/iLightSensor.hpp"
-#include "interfaces/iTemperatureSensor.hpp"
+#include "iMraa.hpp"
+#include "iLightSensor.hpp"
+#include "iTemperatureSensor.hpp"
 
 namespace upm
 {

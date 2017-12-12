@@ -27,10 +27,10 @@
 #include <typeinfo>
 
 #include "ims.h"
-#include "interfaces/iMraa.hpp"
-#include "interfaces/iLightSensor.hpp"
-#include "interfaces/iMoistureSensor.hpp"
-#include "interfaces/iTemperatureSensor.hpp"
+#include "iMraa.hpp"
+#include "iLightSensor.hpp"
+#include "iMoistureSensor.hpp"
+#include "iTemperatureSensor.hpp"
 
 namespace upm {
 /**

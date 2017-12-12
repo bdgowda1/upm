@@ -22,8 +22,8 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "interfaces/iPressureSensor.hpp"
-#include "interfaces/iTemperatureSensor.hpp"
+#include "iPressureSensor.hpp"
+#include "iTemperatureSensor.hpp"
 #include "mraa/i2c.hpp"
 
 namespace upm

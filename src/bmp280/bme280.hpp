@@ -26,7 +26,7 @@
 #pragma once
 
 #include <string>
-#include "interfaces/iHumiditySensor.hpp"
+#include "iHumiditySensor.hpp"
 
 #include "bmp280.hpp"
 
